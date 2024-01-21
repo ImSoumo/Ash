@@ -4,15 +4,15 @@ from Lena import app, BOT_NAME
 from pyrogram import filters , Client 
 from telegraph import upload_file
 from datetime import datetime
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton,CallbackQuery
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, Message 
 from telegraph import Telegraph
 
 telegraph = Telegraph()
 new_user = telegraph.create_account(short_name="LenaAi")
 auth_url = new_user["auth_url"]
 
-@Guardian.on_message(filters.command(["tgm","tgt"]))
-async def upload_media_text_to_telegraph(app, message):
+@app.on_message(filters.command(["tgm","tgt"]))
+async def telegraphFiles(app: Client, message: Message):
     replied = message.reply_to_message          
     if message.command[0] == "tgm":        
         if not replied:
