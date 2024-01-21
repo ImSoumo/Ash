@@ -21,7 +21,7 @@ def commandpro(commands: Union[str, List[str]]):
     return filters.command(commands,"")
 
 
-@app.on_message(filters.command("py") & filters.user(SUDOERS))
+@app.on_message(filters.command("py") & SUDOERS)
 @app.on_edited_message(filters.command("py") & filters.user(SUDOERS))
 async def eval(client, message: Message):
     if len(message.text.split()) < 2:
