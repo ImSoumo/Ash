@@ -1,6 +1,6 @@
 import asyncio
 from lexica import AsyncClient
-from pyrogram import Client
+from pyrogram import Client, filters
 from pyrogram.types import Message
 from Lena import app
 import os
