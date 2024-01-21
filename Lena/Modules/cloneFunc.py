@@ -22,4 +22,4 @@ async def clone(app: Client, message: Message):
         user = await pbot.get_me()
         await message.reply(f**"Your Client Has Been Successfully Started As @{user.username}!**\n**Thanks For Cloning.**")
     except Exception as e:
-        await msg.reply(f"**Error :** `{str(e)}`\n**Press /start To Start Again !**")
+        await message.reply(f"**Error :** `{str(e)}`\n**Press /start To Start Again !**")
