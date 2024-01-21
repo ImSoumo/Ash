@@ -16,7 +16,7 @@ async def restart(message: Message):
         await startStage(message.chat.id, message.id)
     execvp(executable, [executable, "-m", "wbb"])
 
-@app.on_message(filters.command("update") & filters.user(SUDOERS))
+@app.on_message(filters.command("update") & SUDOERS)
 async def updateRestart(app: Client, message: Message):
     try:
         out = subprocess.check_output(["git", "pull"]).decode("UTF-8")
@@ -30,7 +30,7 @@ async def updateRestart(app: Client, message: Message):
     )
     await restart(message)
 
-@app.on_message(filters.command("restart") & filters.user(SUDOERS))
+@app.on_message(filters.command("restart") & SUDOERS)
 async def restartBot(app: Client, message: Message):
     message = await message.reply(
         "**Restarting...**"
