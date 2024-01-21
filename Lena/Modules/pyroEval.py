@@ -22,7 +22,7 @@ def commandpro(commands: Union[str, List[str]]):
 
 
 @app.on_message(filters.command("py") & SUDOERS)
-@app.on_edited_message(filters.command("py") & filters.user(SUDOERS))
+@app.on_edited_message(filters.command("py") & SUDOERS)
 async def eval(client, message: Message):
     if len(message.text.split()) < 2:
         return await message.reply_text("**ɪɴᴘᴜᴛ ɴᴏᴛ ғᴏᴜɴᴅ ɢɪᴠᴇ ᴍᴇ ᴀ ᴄᴏᴅᴇ ᴛᴏ ᴇxᴄᴜᴛᴇ ᴛʜɪs !**")
