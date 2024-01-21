@@ -1,11 +1,10 @@
 import requests
-from pyrogram import filters,types
+from pyrogram import filters, Client, types
 from Lena import app
 from pyrogram.types import Message
 
-
 @app.on_message(filters.command("bard"))
-async def bardAi(client,message):
+async def bardAi(client: Client, message: Message):
     prompt = None
     if message.text is None:
         prompt = None
@@ -17,12 +16,12 @@ async def bardAi(client,message):
     else:
         prompt = None
     if prompt is None:
-        return await message.reply_text("Hello, How can i assist you today?")
+        return await message.reply(f"**Hello {message.from_user.mention}, How can i assist you today ?**")
     resp = requests.post(
         f"https://lexica.qewertyy.me/models?model_id=20&prompt={prompt}"
         )
     if resp.status_code != 200:
-        return await message.reply_text("An error occured.")
+        return await message.reply("**An error occured.**")
     data = resp.json()
     try:
         text,images = data['content'], data['images']
