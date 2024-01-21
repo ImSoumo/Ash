@@ -32,7 +32,7 @@ async def getSudoers():
     sudodb = db.sudo
     sudoers = await sudodb.find_one({"sudo": "sudo"})
     sudoers = [] if not sudoers else sudoers["sudoers"]
-    for user_id in Config.SUDO_USERS_ID:
+    for user_id in Config.SUDO_USERS:
         SUDOERS.add(user_id)
         if user_id not in sudoers:
             sudoers.append(user_id)
