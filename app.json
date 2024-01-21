@@ -1,0 +1,12 @@
+"name": "Lena Ai", 
+       "description": "A Modern Artificial Intelligence Bot By @Quartny !", 
+       "logo": "https://telegra.ph/file/296509ba6599dc0d21b12.jpg", 
+       "keywords": [ 
+          "telegram", 
+          "modular", 
+          "artifical", 
+          "intelligence"
+       ],    
+    "repository": "https://github.com/Sourayen/LenaAi", 
+    "stack": "heroku-22"
+ 
