@@ -1,7 +1,6 @@
 import os
 import datetime
 from Lena import app, BOT_NAME
-from config import COMMAND_HANDLER
 from pyrogram import filters , Client 
 from telegraph import upload_file
 from datetime import datetime
