@@ -36,8 +36,6 @@ async def searchImages(app: Client, m: Message):
     try:
         reply = await m.reply_text("`Searching...`")
         prompt = None
-	if m.text is None:
-            prompt = None
 	if " " in m.text:
             try:
                 prompt = m.text.split(None, 1)[1]
