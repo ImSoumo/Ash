@@ -16,20 +16,6 @@ async def restart(message: Message):
         await startStage(message.chat.id, message.id)
     execvp(executable, [executable, "-m", "wbb"])
 
-@app.on_message(filters.command("update") & SUDOERS)
-async def updateRestart(app: Client, message: Message):
-    try:
-        out = subprocess.check_output(["git", "pull"]).decode("UTF-8")
-        if "Already up to date." in str(out):
-            return await message.reply("**Branch Already Updated !**")
-        await message.reply(f"`{out}`")
-    except Exception as e:
-        return await message.reply(str(e))
-    message = await message.reply_text(
-        "**Updated With Default Branch Restarting Now...**"
-    )
-    await restart(message)
-
 @app.on_message(filters.command("restart") & SUDOERS)
 async def restartBot(app: Client, message: Message):
     message = await message.reply(
