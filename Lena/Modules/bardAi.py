@@ -16,12 +16,12 @@ async def bardAi(client: Client, message: Message):
     else:
         prompt = None
     if prompt is None:
-        return await message.reply(f"**Hello {message.from_user.mention}, How can i assist you today ?**")
+        return await message.reply(f"Hello {message.from_user.mention}, How can i assist you today ?")
     resp = requests.post(
         f"https://lexica.qewertyy.me/models?model_id=20&prompt={prompt}"
         )
     if resp.status_code != 200:
-        return await message.reply("**An error occured.**")
+        return await message.reply("An error occured.")
     data = resp.json()
     try:
         text,images = data['content'], data['images']
