@@ -1,5 +1,5 @@
 import asyncio
-from laxica import AsyncClient
+from lexica import AsyncClient
 from pyrogram import Client
 from pyrogram.types import Message
 from Lena import app
