@@ -12,7 +12,7 @@ async def clone(app: Client, message: Message):
     try:
         await Text.edit("**Booting Your Client...**")                   
         pbot = Client(
-          "Lena",
+          ":Lena:",
           api_id=API_ID,
           api_hash=API_HASH,
           bot_token=Token,
