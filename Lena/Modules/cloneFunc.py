@@ -7,7 +7,7 @@ plugins = dict(
     root="Lena",
     include=[
         "Modules.telegraphFunc",
-        "upscaleFunc"
+        "upscaleAi"
     ]
 )
 
