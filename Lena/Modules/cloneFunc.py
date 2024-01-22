@@ -22,7 +22,7 @@ async def cloneFunc(client: Client, message: Message):
           ":Lena:",
           api_id=API_ID,
           api_hash=API_HASH,
-          bot_token=bot_oken,
+          bot_token=bot_token,
           plugins=plugins
         )
         await pbot.start()
