@@ -16,10 +16,10 @@ async def clone(app: Client, message: Message):
           api_id=API_ID,
           api_hash=API_HASH,
           bot_token=Token,
-          plugins={"root": "Lena.Modules"}
+          plugins={"root": "Lena/Modules"}
         )
         await pbot.start()
         user = await pbot.get_me()
-        await message.reply(f**"Your Client Has Been Successfully Started As @{user.username}!**\n**Thanks For Cloning.**")
+        await message.reply(f"**Your Client Has Been Successfully Started As @{user.username}!**\n**Thanks For Cloning.**")
     except Exception as e:
         await message.reply(f"**Error :** `{str(e)}`\n**Press /start To Start Again !**")
