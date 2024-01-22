@@ -3,20 +3,27 @@ from pyrogram import filters, Client
 from pyrogram.types import Message
 from Config import API_ID, API_HASH
 
+plugins = dict(
+    root="Lena",
+    include=[
+        "Modules.telegraphFunc",
+        "upscaleFunc"
+    ]
+)
 
 @app.on_message(filters.command("clone"))
-async def clone(app: Client, message: Message):
+async def cloneFunc(client: Client, message: Message):
     chat = message.chat
-    Text = await message.reply("**Usᴀɢᴇ :** `/clone` **ʙᴏᴛ ᴛᴏᴋᴇɴ**")
-    Token = message.text.split(None, 1)[1].strip()
+    text = await message.reply("**Usᴀɢᴇ :** `/clone` **ʙᴏᴛ ᴛᴏᴋᴇɴ**")
+    bot_token = message.text.split(None, 1)[1].strip()
     try:
-        await Text.edit("**Booting Your Client...**")                   
+        await text.edit("**Booting Your Client...**")                   
         pbot = Client(
           ":Lena:",
           api_id=API_ID,
           api_hash=API_HASH,
-          bot_token=Token,
-          plugins={"root": "Lena/Modules"}
+          bot_token=bot_oken,
+          plugins=plugins
         )
         await pbot.start()
         user = await pbot.get_me()
