@@ -24,11 +24,12 @@ async def lenaStart():
                 "**Bot ReStarted Successfully !**",
             )
         else:
-            await app.send_message(Config.LOG_GROUP, "**Bot Started !**")
+            await app.send_message(Config.LOG_GROUP, "**// LenaAi Started //**")
     except Exception:
         pass
     
     await idle()
+    await app.send_message(Config.LOG_GROUP, "**// LenaAi Is Now Dead //**")
     LOGGER.info("Goodbye LenaAi Is Now Dead !")
 
 if __name__ == "__main__":
