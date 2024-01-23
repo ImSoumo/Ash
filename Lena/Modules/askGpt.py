@@ -24,7 +24,7 @@ async def LenaAi(bot: Client, message: Message):
         else:
             prompt = message.text.split(' ', 1)[1]
             model = "gpt-3.5-turbo"
-            response = LenaAi.chat.completions(
+            response = LenaAi.chat.completions.create(
                 message = [
                     {
                         "role": "user",
@@ -52,7 +52,7 @@ async def LenaAi(app: Client, message: Message):
         else:
             prompt = message.text.split(' ', 1)[1]
             model = "dall-e-3"
-            response= openai.images.generate(prompt=prompt, model=model)
+            response = LenaAi.images.generate(prompt=prompt, model=model)
             #image_url = response['data'][0]['url']
             end_time = time.time()
             telegram_ping = str(round((end_time - start_time) * 1000, 3)) + " ᴍs"
