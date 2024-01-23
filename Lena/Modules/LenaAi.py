@@ -1,5 +1,6 @@
 import openai
 import asyncio
+from Lena import app
 from pyrogram.types import Message
 from Lena.Modules.askGpt import LenaAi
 from pyrogram import Client, filters
