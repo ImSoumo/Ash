@@ -1,5 +1,5 @@
 import time
-import openai
+from openai import AsyncOpenAI
 from Lena import app
 from pyrogram import Client, filters
 from pyrogram.types import Message
@@ -9,7 +9,7 @@ from typing import Union, List
 def LenaPro(commands: Union[str, List[str]]):
     return filters.command(commands,"")
 
-openai.api_key = "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"
+LenaAi = AsyncOpenAI("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")
 
 @app.on_message(LenaPro(["lena", "Lena"]))
 @app.on_message(filters.command(["lena", "ask"]))
@@ -17,20 +17,26 @@ async def LenaAi(bot: Client, message: Message):
     
     try:
         start_time = time.time()
-        await bot.send_chat_action(message.chat.id, ChatAction.TYPING)
         if len(message.command) < 2:
             await message.reply_text(
               "**Hello ! How can i assist you today ?**"
             )
         else:
-            a = message.text.split(' ', 1)[1]
-            MODEL = "gpt-3.5-turbo"
-            resp = openai.ChatCompletion.create(model=MODEL,messages=[{"role": "user", "content": a}],
-    temperature=0.2)
-            x=resp['choices'][0]["message"]["content"]
+            prompt = message.text.split(' ', 1)[1]
+            model = "gpt-3.5-turbo"
+            response = await LenaAi.chat.completions(
+                message = [
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
+                model=model
+            )
+            #x=resp['choices'][0]["message"]["content"]
             end_time = time.time()
             telegram_ping = str(round((end_time - start_time) * 1000, 3)) + " ᴍs"
-            await message.reply_text(f"{x}", parse_mode=ParseMode.MARKDOWN)     
+            await message.reply_text(f"{response}", parse_mode=ParseMode.MARKDOWN)     
     except Exception as e:
         await message.reply_text(f"**Error :** `{e}` ")        
 
