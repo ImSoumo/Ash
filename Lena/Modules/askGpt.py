@@ -1,5 +1,5 @@
 import time
-from openai import AsyncOpenAI
+from openai import OpenAI
 from Lena import app
 from pyrogram import Client, filters
 from pyrogram.types import Message
@@ -9,7 +9,7 @@ from typing import Union, List
 def LenaPro(commands: Union[str, List[str]]):
     return filters.command(commands,"")
 
-LenaAi = AsyncOpenAI("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")
+LenaAi = OpenAI("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")
 
 @app.on_message(LenaPro(["lena", "Lena"]))
 @app.on_message(filters.command(["lena", "ask"]))
@@ -24,7 +24,7 @@ async def LenaAi(bot: Client, message: Message):
         else:
             prompt = message.text.split(' ', 1)[1]
             model = "gpt-3.5-turbo"
-            response = await LenaAi.chat.completions(
+            response = LenaAi.chat.completions(
                 message = [
                     {
                         "role": "user",
