@@ -9,7 +9,7 @@ from typing import Union, List
 def LenaPro(commands: Union[str, List[str]]):
     return filters.command(commands,"")
 
-LenaAi = OpenAI("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")
+LenaAi = OpenAI(api_key="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")
 
 @app.on_message(LenaPro(["lena", "Lena"]))
 @app.on_message(filters.command(["lena", "ask"]))
