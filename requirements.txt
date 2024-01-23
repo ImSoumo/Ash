@@ -1,5 +1,6 @@
 aiohttp
 dnspython==2.1.0
+openai
 motor
 pillow
 pyrogram
