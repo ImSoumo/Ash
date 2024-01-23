@@ -2,7 +2,7 @@ import asyncio
 import Config
 import time
 import logging
-from os import path
+from openai import OpenAI
 from motor.motor_asyncio import AsyncIOMotorClient as MongoClient
 from pyrogram import Client, filters
 from pyrogram.types import Message
@@ -23,6 +23,7 @@ LOGGER = logging.getLogger('[LenaAi]')
 LOGGER.info("LenaAi Starting | Licensed Under BSD 3-Clause License")
 LOGGER.info("Project Maintained By: https://github.com/its-soumo")
 
+LenaAi = OpenAI(api_key="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")
 Mongo = MongoClient(Config.DB_URL)
 db = Mongo.Lena
 
