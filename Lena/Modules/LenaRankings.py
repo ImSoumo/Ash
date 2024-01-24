@@ -1,5 +1,6 @@
+import time
 import asyncio
-from Lena import app, LOGGER, db
+from Lena import app, db
 from datetime import date
 from pyrogram import Client, filters, types as T
 from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
@@ -36,7 +37,7 @@ async def getName(app, id):
     else:
         try:
             i = await app.get_users(id)
-            i = f'{(i.first_name)} {(i.last_name)}'
+            i = f'{(i.first_name)}'
             name_cache[id] = i
             return i
         except:
@@ -61,11 +62,11 @@ async def incUser(_, message: T.Message):
     chat = message.chat.id
     user = message.from_user.id
     await increaseCount(chat, user)
-    LOGGER.info(chat, user, "Increased !")
+    print(chat, user, "Increased !")
 
 
 async def showTopToday(_, message: T.Message):
-    LOGGER.info("Today's Top In", message.chat.id)
+    print("Today's Top In", message.chat.id)
     chat = await rankdb.find_one({"chat": message.chat.id})
     today = str(date.today())
 
@@ -79,7 +80,7 @@ async def showTopToday(_, message: T.Message):
             photo="https://telegra.ph//file/3f12d7ceb3aaa0eec6999.jpg",
             caption="**ɴᴏ ᴅᴀᴛᴀ ᴀᴠᴀɪʟᴀʙʟᴇ ғᴏʀ ᴛᴏᴅᴀʏ !**"
         )
-    t = "๏ **ᴛᴏᴅᴀʏ's ᴛᴏᴘ ʀᴀɴᴋɪɴɢs :**\n\n"
+    t = "**Tᴏᴅᴀʏ's Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
 
     pos = 1
     for i, k in sorted(chat[today].items(), key=lambda x: x[1], reverse=True)[:10]:
@@ -113,14 +114,14 @@ async def callbackOverall(app, query: CallbackQuery):
     else:
         cooldowns[user_id] = time.time()
         if query.data =="overAll_":
-            LOGGER.info("Overall Top In", query.message.chat.id)
+            print("Overall Top In", query.message.chat.id)
             chat = await rankdb.find_one({"chat": query.message.chat.id})
 
             if not chat:
                 return await query.answer("ɴᴏ ᴅᴀᴛᴀ ᴀᴠᴀɪʟᴀʙʟᴇ !", show_alert=True)
 
             await query.answer("Pʀᴏᴄᴇssɪɴɢ... Pʟᴇᴀsᴇ Wᴀɪᴛ")
-            t = "๏ **ᴏᴠᴇʀᴀʟʟ ᴛᴏᴘ ʀᴀɴᴋɪɴɢs :**\n\n"
+            t = "**Oᴠᴇʀᴀʟʟ Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
 
             overall_dict = {}
             for i, k in chat.items():
@@ -147,7 +148,7 @@ async def callbackOverall(app, query: CallbackQuery):
             )
           
         elif query.data =="today_":
-            LOGGER.info("Today Top In", query.message.chat.id)
+            print("Today Top In", query.message.chat.id)
             chat = await rankdb.find_one({"chat": query.message.chat.id})
             today = str(date.today())
 
@@ -158,7 +159,7 @@ async def callbackOverall(app, query: CallbackQuery):
                 return await query.answer("ɴᴏ ᴅᴀᴛᴀ ᴀᴠᴀɪʟᴀʙʟᴇ ғᴏʀ ᴛᴏᴅᴀʏ !", show_alert=True)
               
             await query.answer("Pʀᴏᴄᴇssɪɴɢ... Pʟᴇᴀsᴇ Wᴀɪᴛ")
-            t = "๏ **ᴛᴏᴅᴀʏ's ᴛᴏᴘ ʀᴀɴᴋɪɴɢs :**\n\n"
+            t = "**Tᴏᴅᴀʏ's Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
 
             pos = 1
             for i, k in sorted(chat[today].items(), key=lambda x: x[1], reverse=True)[:10]:
