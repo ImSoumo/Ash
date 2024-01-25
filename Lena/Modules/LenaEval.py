@@ -1,14 +1,14 @@
 import io
-from re import sub
 import sys
 import traceback
+import subprocess
+from re import sub
 from typing import Union, List
 from Lena import app, SUDOERS
 from pyrogram.types import Message
 from pyrogram.errors import RPCError
-import subprocess
 from datetime import datetime
-from pyrogram import filters, enums
+from pyrogram import Client, filters, enums
 
 async def aexec(code, client, message):
     exec(
@@ -16,9 +16,6 @@ async def aexec(code, client, message):
         + "".join(f"\n {l_}" for l_ in code.split("\n"))
     )
     return await locals()["__aexec"](client, message)
-
-def commandpro(commands: Union[str, List[str]]):
-    return filters.command(commands,"")
 
 
 @app.on_message(filters.command("py") & SUDOERS)
@@ -28,7 +25,7 @@ async def eval(client, message: Message):
         return await message.reply_text("**ɪɴᴘᴜᴛ ɴᴏᴛ ғᴏᴜɴᴅ ɢɪᴠᴇ ᴍᴇ ᴀ ᴄᴏᴅᴇ ᴛᴏ ᴇxᴄᴜᴛᴇ ᴛʜɪs !**")
     
     cmd = message.text.split(maxsplit=1)[1]     
-    status_message = await message.reply_text("**Processing...**")    
+    status_message = await message.reply_text("**Pʀᴏᴄᴇssɪɴɢ...**")    
     start = datetime.now()
     reply_to_ = message
     if message.reply_to_message:
@@ -54,17 +51,17 @@ async def eval(client, message: Message):
     elif stdout:
         evaluation = stdout
     else:
-        evaluation = "**Success**"
+        evaluation = "**Dᴏɴᴇ !**"
     end = datetime.now()
     ping = (end-start).microseconds / 1000
-    final_output = "<b>ɪɴᴘᴜᴛ :</b>"
+    final_output = "<b>Iɴᴘᴜᴛ :</b>"
     final_output += f"<pre language='python'>{cmd}</pre>\n\n"
-    final_output += "**ᴏᴜᴛᴘᴜᴛ :**\n"
+    final_output += "**Oᴜᴛᴘᴜᴛ :**\n"
     final_output += f"<code>{evaluation.strip()}</code> \n\n"
-    final_output += f"<b>ᴛɪᴍᴇ ᴛᴀᴋᴇɴ :</b> <code>{ping}</code><b>ᴍs</b>"
-    if len(final_output) > 9600000096:
+    final_output += f"<b>ᴛɪᴍᴇ ᴛᴀᴋᴇɴ :</b> <code>{ping}</code><b> ᴍs</b>"
+    if len(final_output) > 9600000000000000000000000000000096:
         with io.BytesIO(str.encode(final_output)) as out_file:
-            out_file.name = "eval.text"
+            out_file.name = "eval.txt"
             await reply_to_.reply_document(
                 document=out_file, caption=cmd, disable_notification=True
             )
