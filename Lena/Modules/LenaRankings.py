@@ -30,17 +30,17 @@ async def increaseCount(chat, user):
 #| Rankings DB Get User Name Function
 name_cache = {}
 
-async def getName(app, id):
+async def getName(app, user, chat):
     global name_cache
 
-    if id in name_cache:
-        return name_cache[id]
+    if user in name_cache:
+        return name_cache[user]
     else:
         try:
-            i = await app.get_users(id)
-            i = f'{(i.mention)}'
-            name_cache[id] = i
-            return i
+            up = await app.get_chat_member(chat, user)
+            usr = f"[{(up.user.first_name)}](tg://user?id={up.user.id})"
+            name_cache[user] = usr
+            return usr
         except:
             user = await ranser.find_one(id)
             if user:
@@ -92,7 +92,7 @@ async def showTopToday(_, message: T.Message):
 
     pos = 1
     for i, k in sorted(chat[today].items(), key=lambda x: x[1], reverse=True)[:10]:
-        i = await getName(app, i)
+        i = await getName(app, i, message.chat.id)
         txt += f"**{pos}. {i}** · `{k}`\n"
         pos += 1
     total = sum(chat[today].values())
@@ -155,7 +155,7 @@ async def callbackOverall(app, query: CallbackQuery):
                 total += sum(k.values())
             pos = 1
             for i, k in sorted(overall_dict.items(), key=lambda x: x[1], reverse=True)[:10]:
-                i = await getName(app, i)
+                i = await getName(app, i, query.chat.id)
                 txt += f"**{pos}. {i}** · `{k}`\n"
                 pos += 1
             txt += f"\n**✉️ Tᴏᴛᴀʟ Mᴇssᴀɢᴇs :** `{total}`"
@@ -192,7 +192,7 @@ async def callbackOverall(app, query: CallbackQuery):
 
             pos = 1
             for i, k in sorted(chat[today].items(), key=lambda x: x[1], reverse=True)[:10]:
-                i = await getName(app, i)
+                i = await getName(app, i, query.chat.id)
                 txt += f"**{pos}. {i}** · `{k}`\n"
                 pos += 1
             total = sum(chat[today].values())
@@ -239,7 +239,7 @@ async def callbackOverall(app, query: CallbackQuery):
                 total += sum(k.values())
             pos = 1
             for i, k in sorted(overall_dict.items(), key=lambda x: x[1], reverse=True)[:10]:
-                i = await getName(app, i)
+                i = await getName(app, i, query.chat.id)
                 txt += f"**{pos}. {i}** · `{k}`\n"
                 pos += 1
             txt += f"\n**✉️ Tᴏᴛᴀʟ Mᴇssᴀɢᴇs :** `{total}`"
@@ -277,7 +277,7 @@ async def callbackOverall(app, query: CallbackQuery):
 
             pos = 1
             for i, k in sorted(chat[today].items(), key=lambda x: x[1], reverse=True)[:10]:
-                i = await getName(app, i)
+                i = await getName(app, i, query.chat.id)
                 txt += f"**{pos}. {i}** · `{k}`\n"
                 pos += 1
             total = sum(chat[today].values())
@@ -300,6 +300,7 @@ async def callbackOverall(app, query: CallbackQuery):
         
         elif query.data =="closeRank_":
             try:
-                await query.edit_caption("**Cʟᴏsᴇᴅ Cʜᴀᴛ Rᴀɴᴋɪɴɢs !**")
+                await query.message.delete()
+                await app.send_message(chat_id=query.chat.id, text="**Cʟᴏsᴇᴅ Cʜᴀᴛ Rᴀɴᴋɪɴɢs !**", reply_to_message_id=query.id)
             except:
                 pass
