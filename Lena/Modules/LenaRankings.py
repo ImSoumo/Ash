@@ -35,27 +35,19 @@ async def getName(app, user):
         return name_cache[user]
     else:
         try:
-            up = await app.get_users(user)
-            usr = f"{(up.mention)}"
+            usr = await app.get_chat(user)
+            usr = f"{(usr.mention)}"
             name_cache[user] = usr
             return usr
         except:
             user = await ranser.find_one(user)
             if user:
-                get = (await app.get_users(user)).mention
+                ueser = (await app.get_users(user)).mention
             else:
                 return
-            return get
+            return ueser
             
 #| End Rankings DB Functions
-
-async def TestFunc(chat: int, user: int):
-    try:
-        usr = await app.get_chat_member(chat, user)
-        mention = f"{(usr.user.mention)}"
-    except:
-        return
-    return mention
 
 @app.on_message(
     ~filters.bot
@@ -95,11 +87,9 @@ async def showTopToday(_, message: T.Message):
             caption="**ɴᴏ ᴅᴀᴛᴀ ᴀᴠᴀɪʟᴀʙʟᴇ ғᴏʀ ᴛᴏᴅᴀʏ !**"
         )
     txt = "**🔰 Tᴏᴅᴀʏ's Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
-    chau = message.chat.id
     pos = 1
     for i, k in sorted(chat[today].items(), key=lambda x: x[1], reverse=True)[:10]:
-        #i = await getName(app, i)
-        i = await TestFunc(chau, i)
+        i = await getName(app, i)
         txt += f"**{pos}. {i}** · `{k}`\n"
         pos += 1
     total = sum(chat[today].values())
@@ -114,7 +104,7 @@ async def showTopToday(_, message: T.Message):
                     InlineKeyboardButton("Oᴠᴇʀᴀʟʟ Rᴀɴᴋɪɴɢs", callback_data="overAll_")
                 ],
                 [
-                    InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="overFresh_"),
+                    InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="todayFresh_"),
                     InlineKeyboardButton("Cʟᴏsᴇ", callback_data="closeRank_")
                 ]
             ]
@@ -147,7 +137,6 @@ async def callbackOverall(app, query: CallbackQuery):
 
             await query.answer("Pʀᴏᴄᴇssɪɴɢ... Pʟᴇᴀsᴇ Wᴀɪᴛ")
             txt = "**🔰 Oᴠᴇʀᴀʟʟ Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
-            chau = query.chat.id
             overall_dict = {}
             total = 0
             for i, k in chat.items():
@@ -162,8 +151,7 @@ async def callbackOverall(app, query: CallbackQuery):
                 total += sum(k.values())
             pos = 1
             for i, k in sorted(overall_dict.items(), key=lambda x: x[1], reverse=True)[:10]:
-                #i = await getName(app, i)
-                i = await TestFunc(chau, i)
+                i = await getName(app, i)
                 txt += f"**{pos}. {i}** · `{k}`\n"
                 pos += 1
             txt += f"\n**✉️ Tᴏᴛᴀʟ Mᴇssᴀɢᴇs :** `{total}`"
@@ -176,7 +164,7 @@ async def callbackOverall(app, query: CallbackQuery):
                             InlineKeyboardButton("Tᴏᴅᴀʏ's Rᴀɴᴋɪɴɢs", callback_data="today_")
                         ],
                         [
-                            InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="todayFresh_"),
+                            InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="overFresh_"),
                             InlineKeyboardButton("Cʟᴏsᴇ", callback_data="closeRank_")
                         ]
                     ]
@@ -214,7 +202,7 @@ async def callbackOverall(app, query: CallbackQuery):
                             InlineKeyboardButton("Oᴠᴇʀᴀʟʟ Rᴀɴᴋɪɴɢs", callback_data="overAll_")
                         ],
                         [
-                            InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="overFresh_"),
+                            InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="todayFresh_"),
                             InlineKeyboardButton("Cʟᴏsᴇ", callback_data="closeRank_")
                         ]
                     ]
@@ -260,7 +248,7 @@ async def callbackOverall(app, query: CallbackQuery):
                             InlineKeyboardButton("Tᴏᴅᴀʏ's Rᴀɴᴋɪɴɢs", callback_data="today_")
                         ],
                         [
-                            InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="todayFresh_"),
+                            InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="overFresh_"),
                             InlineKeyboardButton("Cʟᴏsᴇ", callback_data="closeRank_")
                         ]
                     ]
@@ -299,7 +287,7 @@ async def callbackOverall(app, query: CallbackQuery):
                             InlineKeyboardButton("Oᴠᴇʀᴀʟʟ Rᴀɴᴋɪɴɢs", callback_data="overAll_")
                         ],
                         [
-                            InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="overFresh_"),
+                            InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="todayFresh_"),
                             InlineKeyboardButton("Cʟᴏsᴇ", callback_data="closeRank_")
                         ]
                     ]
