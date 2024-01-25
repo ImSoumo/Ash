@@ -37,7 +37,7 @@ async def getName(app, id):
     else:
         try:
             i = await app.get_users(id)
-            i = f'{(i.first_name)}'
+            i = f'{(i.mention)}'
             name_cache[id] = i
             return i
         except:
@@ -80,25 +80,26 @@ async def showTopToday(_, message: T.Message):
             photo="https://telegra.ph//file/3f12d7ceb3aaa0eec6999.jpg",
             caption="**ɴᴏ ᴅᴀᴛᴀ ᴀᴠᴀɪʟᴀʙʟᴇ ғᴏʀ ᴛᴏᴅᴀʏ !**"
         )
-    t = "**Tᴏᴅᴀʏ's Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
+    txt = "**🔰 Tᴏᴅᴀʏ's Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
 
     pos = 1
     for i, k in sorted(chat[today].items(), key=lambda x: x[1], reverse=True)[:10]:
         i = await getName(app, i)
-
-        t += f"**{pos}.** {i} · {k}\n"
+        txt += f"**{pos}. {i}** · `{k}`\n"
         pos += 1
-
+    total = sum(chat[today].values())
+    txt += f"\n**✉️ Tᴏᴅᴀʏ's Mᴇssᴀɢᴇs :** `{total}`"
+    
     await message.reply_photo(
         photo="https://telegra.ph/file/55d2355063707105d71ca.jpg",
-        caption=t,
+        caption=txt,
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("Oᴠᴇʀᴀʟʟ Rᴀɴᴋɪɴɢs", callback_data="overAll_")]]
         ),
     )
 
 cooldowns = {}
-COOLDOWN_DURATION = 10
+COOLDOWN_DURATION = 15
 
 @app.on_callback_query()
 async def callbackOverall(app, query: CallbackQuery):
@@ -108,7 +109,7 @@ async def callbackOverall(app, query: CallbackQuery):
         remaining_time = int(COOLDOWN_DURATION - (time.time() - cooldowns[user_id]))
         await app.answer_callback_query(
             query.id,
-            f"Wait {remaining_time} Seconds Cooldown Remaining ! Don't Spam."
+            f"Wᴀɪᴛ {remaining_time} Sᴇᴄᴏɴᴅs Cᴏᴏʟᴅᴏᴡɴ Rᴇᴍᴀɪɴɪɴɢ ! Dᴏɴ'ᴛ sᴘᴀᴍ."
         )
         return
     else:
@@ -121,9 +122,10 @@ async def callbackOverall(app, query: CallbackQuery):
                 return await query.answer("ɴᴏ ᴅᴀᴛᴀ ᴀᴠᴀɪʟᴀʙʟᴇ !", show_alert=True)
 
             await query.answer("Pʀᴏᴄᴇssɪɴɢ... Pʟᴇᴀsᴇ Wᴀɪᴛ")
-            t = "**Oᴠᴇʀᴀʟʟ Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
+            txt = "**🔰 Oᴠᴇʀᴀʟʟ Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
 
             overall_dict = {}
+            total = 0
             for i, k in chat.items():
                 if i == "chat" or i == "_id":
                     continue
@@ -133,15 +135,16 @@ async def callbackOverall(app, query: CallbackQuery):
                         overall_dict[j] = l
                     else:
                         overall_dict[j] += l
+                total += sum(k.values())
             pos = 1
             for i, k in sorted(overall_dict.items(), key=lambda x: x[1], reverse=True)[:10]:
                 i = await getName(app, i)
-
-                t += f"**{pos}.** {i} · {k}\n"
+                txt += f"**{pos}. {i}** · `{k}`\n"
                 pos += 1
+            txt += f"\n**✉️ Tᴏᴛᴀʟ Mᴇssᴀɢᴇs :** `{total}`"
 
             await query.message.edit_caption(
-                t,
+                txt,
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton("Tᴏᴅᴀʏ's Rᴀɴᴋɪɴɢs", callback_data="today_")]]
                 )
@@ -159,17 +162,18 @@ async def callbackOverall(app, query: CallbackQuery):
                 return await query.answer("ɴᴏ ᴅᴀᴛᴀ ᴀᴠᴀɪʟᴀʙʟᴇ ғᴏʀ ᴛᴏᴅᴀʏ !", show_alert=True)
               
             await query.answer("Pʀᴏᴄᴇssɪɴɢ... Pʟᴇᴀsᴇ Wᴀɪᴛ")
-            t = "**Tᴏᴅᴀʏ's Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
+            txt = "**🔰 Tᴏᴅᴀʏ's Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
 
             pos = 1
             for i, k in sorted(chat[today].items(), key=lambda x: x[1], reverse=True)[:10]:
                 i = await getName(app, i)
-
-                t += f"**{pos}.** {i} · {k}\n"
+                txt += f"**{pos}. {i}** · `{k}`\n"
                 pos += 1
+            total = sum(chat[today].values())
+            txt += f"\n**✉️ Tᴏᴅᴀʏ's Mᴇssᴀɢᴇs :** `{total}`"
 
             await query.message.edit_caption(
-                t,
+                txt,
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton("Oᴠᴇʀᴀʟʟ Rᴀɴᴋɪɴɢs", callback_data="overAll_")]]
                 )
