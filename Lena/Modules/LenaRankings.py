@@ -94,7 +94,15 @@ async def showTopToday(_, message: T.Message):
         photo="https://telegra.ph/file/55d2355063707105d71ca.jpg",
         caption=txt,
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("Oᴠᴇʀᴀʟʟ Rᴀɴᴋɪɴɢs", callback_data="overAll_")]]
+            [
+                [
+                    InlineKeyboardButton("Oᴠᴇʀᴀʟʟ Rᴀɴᴋɪɴɢs", callback_data="overAll_"),
+                    InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="overFresh_")
+                ],
+                [
+                    InlineKeyboardButton("Cʟᴏsᴇ", callback_data="closeRank_")
+                ]
+            ]
         ),
     )
 
@@ -146,7 +154,15 @@ async def callbackOverall(app, query: CallbackQuery):
             await query.message.edit_caption(
                 txt,
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("Tᴏᴅᴀʏ's Rᴀɴᴋɪɴɢs", callback_data="today_")]]
+                    [
+                        [
+                            InlineKeyboardButton("Tᴏᴅᴀʏ's Rᴀɴᴋɪɴɢs", callback_data="today_")
+                        ],
+                        [
+                            InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="todayFresh_"),
+                            InlineKeyboardButton("Cʟᴏsᴇ", callback_data="closeRank_")
+                        ]
+                    ]
                 )
             )
           
@@ -175,6 +191,100 @@ async def callbackOverall(app, query: CallbackQuery):
             await query.message.edit_caption(
                 txt,
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("Oᴠᴇʀᴀʟʟ Rᴀɴᴋɪɴɢs", callback_data="overAll_")]]
+                    [
+                        [
+                            InlineKeyboardButton("Oᴠᴇʀᴀʟʟ Rᴀɴᴋɪɴɢs", callback_data="overAll_")
+                        ],
+                        [
+                            InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="overFresh_"),
+                            InlineKeyboardButton("Cʟᴏsᴇ", callback_data="closeRank_")
+                        ]
+                    ]
                 )
             )
+
+        elif query.data =="overFresh_":
+            print("Refreshed Overall Top In", query.message.chat.id)
+            chat = await rankdb.find_one({"chat": query.message.chat.id})
+
+            if not chat:
+                return await query.answer("ɴᴏ ᴅᴀᴛᴀ ᴀᴠᴀɪʟᴀʙʟᴇ !", show_alert=True)
+
+            msg = await query.message.edit_caption("**Rʀᴇғʀᴇsʜɪɴɢ...**")
+            await query.answer("Rʀᴇғʀᴇsʜɪɴɢ... Pʟᴇᴀsᴇ Wᴀɪᴛ")
+            txt = "**🔰 Rᴇғʀᴇsʜᴇᴅ Oᴠᴇʀᴀʟʟ Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
+
+            overall_dict = {}
+            total = 0
+            for i, k in chat.items():
+                if i == "chat" or i == "_id":
+                    continue
+
+                for j, l in k.items():
+                    if j not in overall_dict:
+                        overall_dict[j] = l
+                    else:
+                        overall_dict[j] += l
+                total += sum(k.values())
+            pos = 1
+            for i, k in sorted(overall_dict.items(), key=lambda x: x[1], reverse=True)[:10]:
+                i = await getName(app, i)
+                txt += f"**{pos}. {i}** · `{k}`\n"
+                pos += 1
+            txt += f"\n**✉️ Tᴏᴛᴀʟ Mᴇssᴀɢᴇs :** `{total}`"
+
+            await msg.edit_text(
+                txt,
+                reply_markup=InlineKeyboardMarkup(
+                    [
+                        [
+                            InlineKeyboardButton("Tᴏᴅᴀʏ's Rᴀɴᴋɪɴɢs", callback_data="today_")
+                        ],
+                        [
+                            InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="todayFresh_"),
+                            InlineKeyboardButton("Cʟᴏsᴇ", callback_data="closeRank_")
+                        ]
+                    ]
+                )
+            )
+
+        elif query.data =="todayFresh_":
+            print("Today Top In", query.message.chat.id)
+            chat = await rankdb.find_one({"chat": query.message.chat.id})
+            today = str(date.today())
+
+            if not chat:
+                return await query.answer("ɴᴏ ᴅᴀᴛᴀ ᴀᴠᴀɪʟᴀʙʟᴇ !", show_alert=True)
+
+            if not chat.get(today):
+                return await query.answer("ɴᴏ ᴅᴀᴛᴀ ᴀᴠᴀɪʟᴀʙʟᴇ ғᴏʀ ᴛᴏᴅᴀʏ !", show_alert=True)
+
+            msg = await query.message.edit_caption("**Rʀᴇғʀᴇsʜɪɴɢ...**")
+            await query.answer("Rʀᴇғʀᴇsʜɪɴɢ... Pʟᴇᴀsᴇ Wᴀɪᴛ")
+            txt = "**🔰 Rᴇғʀᴇsʜᴇᴅ Tᴏᴅᴀʏ's Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
+
+            pos = 1
+            for i, k in sorted(chat[today].items(), key=lambda x: x[1], reverse=True)[:10]:
+                i = await getName(app, i)
+                txt += f"**{pos}. {i}** · `{k}`\n"
+                pos += 1
+            total = sum(chat[today].values())
+            txt += f"\n**✉️ Tᴏᴅᴀʏ's Mᴇssᴀɢᴇs :** `{total}`"
+
+            await msg.edit_text(
+                txt,
+                reply_markup=InlineKeyboardMarkup(
+                    [
+                        [
+                            InlineKeyboardButton("Oᴠᴇʀᴀʟʟ Rᴀɴᴋɪɴɢs", callback_data="overAll_")
+                        ],
+                        [
+                            InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="overFresh_"),
+                            InlineKeyboardButton("Cʟᴏsᴇ", callback_data="closeRank_")
+                        ]
+                    ]
+                )
+            )
+        
+        elif query.data =="closeRank_":
+            await query.edit_caption("**Cʟᴏsᴇᴅ Cʜᴀᴛ Rᴀɴᴋɪɴɢs !**")
