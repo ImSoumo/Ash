@@ -37,7 +37,7 @@ async def getName(app, id):
     else:
         try:
             i = await app.get_users(id)
-            i = f'{(i.mention)}'
+            i = f'{(i.first_name)}'
             name_cache[id] = i
             return i
         except:
