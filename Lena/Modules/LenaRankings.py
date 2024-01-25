@@ -57,12 +57,12 @@ async def userName(app, user: int):
     else:
         try:
             uesr = await app.get_chat(user)
-            uesr = f"[{uesr.user.first_name}](tg://user?id={user})"
+            uesr = f"[{uesr.first_name}](tg://user?id={user})"
             cache[user] = uesr
             return uesr
         except:
             uesr = await app.get_chat(user)
-            uesr = f"{uesr.user.first_name}"
+            uesr = f"{uesr.first_name}"
             return uesr
             
 #| End Rankings DB Functions
