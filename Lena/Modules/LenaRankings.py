@@ -26,6 +26,7 @@ async def increaseCount(chat, user):
     await rankdb.update_one({"chat": chat}, {"$set": {today: user_db}}, upsert=True)
 
 #| Rankings DB Get User Name Function
+"""
 name_cache = {}
 
 async def getName(app, user):
@@ -36,7 +37,7 @@ async def getName(app, user):
     else:
         try:
             usr = await app.get_chat(user)
-            usr = f"{(usr.mention)}"
+            usr = f"[{usr.first_name}](tg://user?id={user})"
             name_cache[user] = usr
             return usr
         except:
@@ -46,6 +47,23 @@ async def getName(app, user):
             else:
                 return
             return ueser
+"""
+
+cache = {}
+
+async def userName(app, user: int):
+    if user in cache:
+        return cache[user]
+    else:
+        try:
+            uesr = await app.get_chat(user)
+            uesr = f"[{uesr.user.first_name}](tg://user?id={user})"
+            cache[user] = uesr
+            return uesr
+        except:
+            uesr = await app.get_chat(user)
+            uesr = f"{uesr.user.first_name}"
+            return uesr
             
 #| End Rankings DB Functions
 
