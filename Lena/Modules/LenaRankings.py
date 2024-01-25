@@ -64,7 +64,7 @@ async def incUser(_, message: T.Message):
             message.text.strip() == "/rankings@LenaAiBot"
             or message.text.strip() == "/rankings"
         ):
-            usr = await app.get_user(message.from_user.id)
+            usr = await _.get_user(message.from_user.id)
             await ranser.insert_one({"user_id": usr.id})
             return await showTopToday(_, message)
 
