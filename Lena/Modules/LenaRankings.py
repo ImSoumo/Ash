@@ -7,6 +7,7 @@ from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardBu
 
 # | Rankings DB Functions
 rankdb = db.rank
+ranser = db.ranser
 
 async def increaseCount(chat, user):
     user = str(user)
@@ -41,7 +42,11 @@ async def getName(app, id):
             name_cache[id] = i
             return i
         except:
-            get = (await app.get_users(id)).first_name
+            user = await ranser.find_one(id)
+            if user:
+                get = (await app.get_users(id)).mention
+            else:
+                return
             return get
             
 #| End Rankings DB Functions
@@ -59,6 +64,8 @@ async def incUser(_, message: T.Message):
             message.text.strip() == "/rankings@LenaAiBot"
             or message.text.strip() == "/rankings"
         ):
+            usr = await app.get_user(message.from_user.id)
+            await ranser.insert_one({"user_id": usr.id})
             return await showTopToday(_, message)
 
     chat = message.chat.id
