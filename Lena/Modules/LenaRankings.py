@@ -64,8 +64,7 @@ async def incUser(_, message: T.Message):
             message.text.strip() == "/rankings@LenaAiBot"
             or message.text.strip() == "/rankings"
         ):
-            usr = await _.get_user(message.from_user.id)
-            await ranser.insert_one({"user_id": usr.id})
+            await ranser.insert_one({"user_id": message.from_user.id})
             return await showTopToday(_, message)
 
     chat = message.chat.id
@@ -132,6 +131,7 @@ async def callbackOverall(app, query: CallbackQuery):
     else:
         cooldowns[user_id] = time.time()
         if query.data =="overAll_":
+            await ranser.insert_one({"user_id": query.from_user.id})
             print("Overall Top In", query.message.chat.id)
             chat = await rankdb.find_one({"chat": query.message.chat.id})
 
@@ -176,6 +176,7 @@ async def callbackOverall(app, query: CallbackQuery):
             )
           
         elif query.data =="today_":
+            await ranser.insert_one({"user_id": query.from_user.id})
             print("Today Top In", query.message.chat.id)
             chat = await rankdb.find_one({"chat": query.message.chat.id})
             today = str(date.today())
@@ -213,6 +214,7 @@ async def callbackOverall(app, query: CallbackQuery):
             )
 
         elif query.data =="overFresh_":
+            await ranser.insert_one({"user_id": query.from_user.id})
             print("Refreshed Overall Top In", query.message.chat.id)
             chat = await rankdb.find_one({"chat": query.message.chat.id})
 
@@ -258,6 +260,7 @@ async def callbackOverall(app, query: CallbackQuery):
             )
 
         elif query.data =="todayFresh_":
+            await ranser.insert_one({"user_id": query.from_user.id})
             print("Today Top In", query.message.chat.id)
             chat = await rankdb.find_one({"chat": query.message.chat.id})
             today = str(date.today())
@@ -296,4 +299,7 @@ async def callbackOverall(app, query: CallbackQuery):
             )
         
         elif query.data =="closeRank_":
-            await query.edit_caption("**Cʟᴏsᴇᴅ Cʜᴀᴛ Rᴀɴᴋɪɴɢs !**")
+            try:
+                await query.edit_caption("**Cʟᴏsᴇᴅ Cʜᴀᴛ Rᴀɴᴋɪɴɢs !**")
+            except:
+                pass
