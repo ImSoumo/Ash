@@ -96,10 +96,10 @@ async def showTopToday(_, message: T.Message):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("Oᴠᴇʀᴀʟʟ Rᴀɴᴋɪɴɢs", callback_data="overAll_"),
-                    InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="overFresh_")
+                    InlineKeyboardButton("Oᴠᴇʀᴀʟʟ Rᴀɴᴋɪɴɢs", callback_data="overAll_")
                 ],
                 [
+                    InlineKeyboardButton("Rᴇғʀᴇsʜ", callback_data="overFresh_"),
                     InlineKeyboardButton("Cʟᴏsᴇ", callback_data="closeRank_")
                 ]
             ]
@@ -107,7 +107,7 @@ async def showTopToday(_, message: T.Message):
     )
 
 cooldowns = {}
-COOLDOWN_DURATION = 15
+COOLDOWN_DURATION = 20
 
 @app.on_callback_query()
 async def callbackOverall(app, query: CallbackQuery):
