@@ -42,9 +42,9 @@ async def getName(app, user):
             name_cache[user] = usr
             return usr
         except:
-            user = await ranser.find_one(id)
+            user = await ranser.find_one(user)
             if user:
-                get = (await app.get_users(id)).mention
+                get = (await app.get_users(user)).mention
             else:
                 return
             return get
