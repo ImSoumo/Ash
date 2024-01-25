@@ -107,7 +107,7 @@ async def showTopToday(_, message: T.Message):
     txt = "**🔰 Tᴏᴅᴀʏ's Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
     pos = 1
     for i, k in sorted(chat[today].items(), key=lambda x: x[1], reverse=True)[:10]:
-        i = await getName(app, i)
+        i = await userName(app, i)
         txt += f"**{pos}. {i}** · `{k}`\n"
         pos += 1
     total = sum(chat[today].values())
@@ -169,7 +169,7 @@ async def callbackOverall(app, query: CallbackQuery):
                 total += sum(k.values())
             pos = 1
             for i, k in sorted(overall_dict.items(), key=lambda x: x[1], reverse=True)[:10]:
-                i = await getName(app, i)
+                i = await userName(app, i)
                 txt += f"**{pos}. {i}** · `{k}`\n"
                 pos += 1
             txt += f"\n**✉️ Tᴏᴛᴀʟ Mᴇssᴀɢᴇs :** `{total}`"
@@ -206,7 +206,7 @@ async def callbackOverall(app, query: CallbackQuery):
 
             pos = 1
             for i, k in sorted(chat[today].items(), key=lambda x: x[1], reverse=True)[:10]:
-                i = await getName(app, i)
+                i = await userName(app, i)
                 txt += f"**{pos}. {i}** · `{k}`\n"
                 pos += 1
             total = sum(chat[today].values())
@@ -253,7 +253,7 @@ async def callbackOverall(app, query: CallbackQuery):
                 total += sum(k.values())
             pos = 1
             for i, k in sorted(overall_dict.items(), key=lambda x: x[1], reverse=True)[:10]:
-                i = await getName(app, i)
+                i = await userName(app, i)
                 txt += f"**{pos}. {i}** · `{k}`\n"
                 pos += 1
             txt += f"\n**✉️ Tᴏᴛᴀʟ Mᴇssᴀɢᴇs :** `{total}`"
@@ -291,7 +291,7 @@ async def callbackOverall(app, query: CallbackQuery):
 
             pos = 1
             for i, k in sorted(chat[today].items(), key=lambda x: x[1], reverse=True)[:10]:
-                i = await getName(app, i)
+                i = await userName(app, i)
                 txt += f"**{pos}. {i}** · `{k}`\n"
                 pos += 1
             total = sum(chat[today].values())
