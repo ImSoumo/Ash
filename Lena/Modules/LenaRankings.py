@@ -13,14 +13,12 @@ async def increaseCount(chat, user):
     user = str(user)
     today = str(date.today())
     user_db = await rankdb.find_one({"chat": chat})
-
     if not user_db:
         user_db = {}
     elif not user_db.get(today):
         user_db = {}
     else:
         user_db = user_db[today]
-
     if user in user_db:
         user_db[user] += 1
     else:
@@ -50,6 +48,14 @@ async def getName(app, user):
             return get
             
 #| End Rankings DB Functions
+
+async def TestFunc(chat: int, user: int):
+    try:
+        usr = await app.get_chat_member(chat, user)
+        mention = f"{(usr.user.mention)}"
+    except:
+        return
+    return mention
 
 @app.on_message(
     ~filters.bot
@@ -89,10 +95,11 @@ async def showTopToday(_, message: T.Message):
             caption="**ɴᴏ ᴅᴀᴛᴀ ᴀᴠᴀɪʟᴀʙʟᴇ ғᴏʀ ᴛᴏᴅᴀʏ !**"
         )
     txt = "**🔰 Tᴏᴅᴀʏ's Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
-
+    chau = message.chat.id
     pos = 1
     for i, k in sorted(chat[today].items(), key=lambda x: x[1], reverse=True)[:10]:
-        i = await getName(app, i)
+        #i = await getName(app, i)
+        i = await TestFunc(chau, i)
         txt += f"**{pos}. {i}** · `{k}`\n"
         pos += 1
     total = sum(chat[today].values())
@@ -140,7 +147,7 @@ async def callbackOverall(app, query: CallbackQuery):
 
             await query.answer("Pʀᴏᴄᴇssɪɴɢ... Pʟᴇᴀsᴇ Wᴀɪᴛ")
             txt = "**🔰 Oᴠᴇʀᴀʟʟ Tᴏᴘ Rᴀɴᴋɪɴɢs :**\n\n"
-
+            chau = query.chat.id
             overall_dict = {}
             total = 0
             for i, k in chat.items():
@@ -155,7 +162,8 @@ async def callbackOverall(app, query: CallbackQuery):
                 total += sum(k.values())
             pos = 1
             for i, k in sorted(overall_dict.items(), key=lambda x: x[1], reverse=True)[:10]:
-                i = await getName(app, i)
+                #i = await getName(app, i)
+                i = await TestFunc(chau, i)
                 txt += f"**{pos}. {i}** · `{k}`\n"
                 pos += 1
             txt += f"\n**✉️ Tᴏᴛᴀʟ Mᴇssᴀɢᴇs :** `{total}`"
