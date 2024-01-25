@@ -37,11 +37,13 @@ async def getName(app, id):
     else:
         try:
             i = await app.get_users(id)
-            i = f'{(i.first_name)}'
+            i = f'{(i.mention)}'
             name_cache[id] = i
             return i
         except:
-            return i
+            get = (await app.get_users(id)).first_name
+            return get
+            
 #| End Rankings DB Functions
 
 @app.on_message(
@@ -84,7 +86,7 @@ async def showTopToday(_, message: T.Message):
 
     pos = 1
     for i, k in sorted(chat[today].items(), key=lambda x: x[1], reverse=True)[:10]:
-        i = await getName(_, i)
+        i = await getName(app, i)
         txt += f"**{pos}. {i}** · `{k}`\n"
         pos += 1
     total = sum(chat[today].values())
