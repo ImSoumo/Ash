@@ -401,7 +401,7 @@ async def addFuncs(_: Client, message: T.Message):
     _euro = message.command[1]
     if not _euro.isdigit():
         return await message.reply("**ᴛʜᴇ ᴘʀᴏᴠɪᴅᴇᴅ ᴠᴀʟᴜᴇ ɪs ɴᴏᴛ ᴀ ɪɴᴛᴇɢᴇʀ...**")
-    _euro = int(await userEuro(_user.id) + int(_euro)
+    _euro = int(await userEuro(_user.id)) + int(_euro)
     await game.update_one({'user_id' : _user.id},{'$set' : {'euro' : _euro }})
     return await message.reply(f"**ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ ᴀᴅᴅᴇᴅ ᴇᴜʀᴏ 💷 ᴛo ᴜsᴇʀ {_user.mention} !**")
 
