@@ -140,7 +140,7 @@ async def callbackOverall(app, query: CallbackQuery):
                 if i == "chat" or i == "_id":
                     continue
 
-                for j, l in k.items():
+                for j, l in int(k.items()):
                     if j not in overall_dict:
                         overall_dict[j] = l
                     else:
