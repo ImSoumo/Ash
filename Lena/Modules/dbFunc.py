@@ -1,6 +1,6 @@
 from Lena import app, SUDOERS
 from pyrogram import Client, filters, types as T
-from Lena.Modules.LenaRankings import rankdb, ranser
+from Lena.Modules.rankingsFunc import rankdb, ranser
 
 @app.on_message(filters.command("reset_rank") & SUDOERS)
 async def resetRankings(_, message: T.Message):
