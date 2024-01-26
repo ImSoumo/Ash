@@ -38,9 +38,12 @@ async def userName(app, user: int):
             cache[user] = uesr
             return uesr
         except:
-            uesr = await app.get_chat(user)
-            uesr = f"{uesr.first_name}"
-            return uesr    
+            try:
+                usr = await app.get_chat(user)
+                usr = f"{uesr.first_name}"
+                return usr
+            except:
+                return user
 #| End Rankings DB Functions
 
 @app.on_message(
