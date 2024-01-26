@@ -1,6 +1,5 @@
 aiohttp
 dnspython==2.1.0
-openai
 motor
 pillow
 pyrogram
@@ -10,5 +9,4 @@ uvloop
 python-dotenv
 telegraph
 httpx[http2]
-lexica-api
 asyncio
