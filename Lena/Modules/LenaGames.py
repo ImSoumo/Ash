@@ -253,15 +253,15 @@ async def basketFunc(_:Client, message: T.Message):
       return await msg.edit_caption("**❤️‍🔥 ᴡᴏᴡ ! ʏᴏᴜ ᴡᴏɴ** `{}` **ᴇᴜʀᴏ 💷**\n• **ᴄᴜʀᴇᴇɴᴛ ʙᴀʟᴀɴᴄᴇ :** `{}`**ᴇᴜʀᴏ 💷.**".format(_bet, _wallet))
 
                                                                                                             
-upvote = r"^((?i)\+|\+\+|\+1|thx|thanx|thanks|pro|cool|good|pro|pero|op|nice|noice|best|uwu|owo|right|correct|peru|piro|👍|\+100)$"
-downvote = r"^(\-|\-\-|\-1|👎|noob|baka|idiot|chutiya|nub|noob|wrong|incorrect|chaprii|chapri|weak|\-100)$"
+regex_upvote = r"^((?i)\+|\+\+|\+1|thx|thanx|thanks|pro|cool|good|pro|pero|op|nice|noice|best|uwu|owo|right|correct|peru|piro|👍|\+100)$"
+regex_downvote = r"^(\-|\-\-|\-1|👎|noob|baka|idiot|chutiya|nub|noob|wrong|incorrect|chaprii|chapri|weak|\-100)$"
 
 @app.on_message(
   filters.text
   & filters.group
   & filters.incoming
   & filters.reply
-  & filters.regex(upvote)
+  & filters.regex(regex_upvote)
   & ~filters.via_bot
   & ~filters.bot,
   group= 5,
@@ -286,7 +286,7 @@ async def upvoteFunc(_:Client, message:T.Mesage):
     & filters.group
     & filters.incoming
     & filters.reply
-    & filters.regex(downvote)
+    & filters.regex(regex_downvote)
     & ~filters.via_bot
     & ~filters.me
     & ~filters.bot,
