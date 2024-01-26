@@ -14,7 +14,6 @@ async def lenaStart():
         importlib.import_module("Lena.Modules." + all_module)
     LOGGER.info("Deployed Successfully !")
     reData = await cleanStage()
-
     try:
         LOGGER.info("Getting Online Status...")
         if reData:
@@ -24,12 +23,12 @@ async def lenaStart():
                 "**Bot ReStarted Successfully !**",
             )
         else:
-            await app.send_message(Config.LOG_GROUP, "**// LenaAi Started //**")
+            await app.send_message(Config.LOG_GROUP, "**| Hɪʟᴀʀʏ Aɪ Sᴛᴀʀᴛᴇᴅ ! |**")
     except Exception:
         pass
     
     await idle()
-    await app.send_message(Config.LOG_GROUP, "**// LenaAi Is Now Dead //**")
+    await app.send_message(Config.LOG_GROUP, "**| Hɪʟᴀʀʏ Aɪ Is Nᴏᴡ Dᴇᴀᴅ ! |**")
     LOGGER.info("Goodbye LenaAi Is Now Dead !")
 
 if __name__ == "__main__":
