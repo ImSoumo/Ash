@@ -3,7 +3,7 @@ import asyncio
 import pymongo
 import datetime
 from pymongo import MongoClient
-from Config import SUDO_USERS
+from Config import SUDO_USERS, PREFIX
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from Lena import app, BOT_ID, SUDOERS, db
 from pyrogram import Client, filters, types as T
@@ -78,7 +78,7 @@ async def canPlay(tame, tru):
       return 0
   return x
 
-@app.on_message(filters.command("bet"))
+@app.on_message(filters.command("bet", PREFIX))
 async def betFunc(_:Client, message: T.Message):
   chat = message.chat
   user = message.from_user
@@ -130,7 +130,7 @@ async def betFunc(_:Client, message: T.Message):
       return await message.reply("**❤️‍🔥 ᴛʜᴇ ᴄᴏɪɴ ʟᴀɴᴅᴇᴅ ᴏɴ {} ʏᴏᴜ ᴡᴏɴ** `{}` **ᴇᴜʀᴏ 💷 !**\n**• ᴄᴜʀᴇᴇɴᴛ ʙᴀʟᴀɴᴄᴇ :** `{}` **ᴇᴜʀᴏ 💷.**".format(rnd, _bet, _wallet)) 
      
 
-@app.on_message(filters.command("dart"))
+@app.on_message(filters.command("dart", PREFIX))
 async def dartFunc(_:Client, message: T.Message):
   chat = message.chat
   user = message.from_user
@@ -171,7 +171,7 @@ async def dartFunc(_:Client, message: T.Message):
       return await msg.edit_caption("**❤️‍🔥 ᴡᴏᴡ ! ʏᴏᴜ ᴡᴏɴ** `{}` **ᴇᴜʀᴏ 💷**\n• **ᴄᴜʀᴇᴇɴᴛ ʙᴀʟᴀɴᴄᴇ :** `{}`**ᴇᴜʀᴏ 💷.**".format(_bet, _wallet))
      
       
-@app.on_message(filters.command("bowl"))
+@app.on_message(filters.command("bowl", PREFIX))
 async def bowlFunc(_:Client, message: T.Message):
   chat = message.chat
   user = message.from_user
@@ -212,7 +212,7 @@ async def bowlFunc(_:Client, message: T.Message):
       return await msg.edit_caption("**❤️‍🔥 ᴡᴏᴡ ! ʏᴏᴜ ᴡᴏɴ** `{}` **ᴇᴜʀᴏ 💷**\n• **ᴄᴜʀᴇᴇɴᴛ ʙᴀʟᴀɴᴄᴇ :** `{}`**ᴇᴜʀᴏ 💷.**".format(_bet, _wallet))
   
 
-@app.on_message(filters.command("basket"))
+@app.on_message(filters.command("basket", PREFIX))
 async def basketFunc(_:Client, message: T.Message):
   chat = message.chat
   user = message.from_user
@@ -273,7 +273,7 @@ async def upvoteFunc(_:Client, message:T.Mesage):
     if user.id == BOT_ID:
         return
     if not await isPlayer(user.id):
-        await createAccount(user.id, user.username)
+        await createAccount(user.id, user.first_name)
     if user.id == message.from_user.id:
         return
     coins = await userEuro(user.id)
@@ -299,7 +299,7 @@ async def downvoteFunc(_:Client, message:T.Message):
     if user.id == BOT_ID:
         return
     if not await isPlayer(user.id):
-        await createAccount(user.id)
+        await createAccount(user.id, user.first_name)
     if user.id == message.from_user.id:
         return
     coins = await userEuro(user.id)
@@ -308,7 +308,7 @@ async def downvoteFunc(_:Client, message:T.Message):
     await message.reply("**ᴛᴏᴏᴋ** `250` **ᴇᴜʀᴏ 💷 ғʀᴏᴍ {} ᴡᴀʟʟᴇᴛ.**".format(user.mention))
     
     
-@app.on_message(filters.command("pay") & filters.group)
+@app.on_message(filters.command("pay", PREFIX) & filters.group)
 async def payFunc(_:Client, message: T.Message):
     if not message.reply_to_message:
         return await message.reply("**ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴜsᴇʀ !**")
@@ -346,7 +346,7 @@ async def payFunc(_:Client, message: T.Message):
     await message.reply("**sᴜᴄᴄᴇss ! {} ᴘᴀɪᴅ** `{}` **ᴇᴜʀᴏ 💷 ᴛᴏ {}.**".format(_from.mention, amount, _user.mention))
 
 
-@app.on_message(filters.command("gtop"))
+@app.on_message(filters.command("gtop", PREFIX))
 async def topUsers(_:Client, message: T.Message): 
     x = game.find().sort("euro", pymongo.DESCENDING)
     msg = "**✨ ɢʟᴏʙᴀʟ ʟᴇᴀᴅᴇʀʙᴏᴀʀᴅ ᴏꜰ ᴇᴜʀᴏ 💷 :\n\n"
@@ -384,7 +384,7 @@ async def userBalance(_:Client, message: T.Message):
     check = await userEuro(user.id)
     await message.reply("**ᴄᴜʀʀᴇɴᴛ ᴇᴜʀᴏ 💷 ᴡᴀʟʟᴇᴛ ᴏꜰ ᴜꜱᴇʀ {} :** `{}` ".format(user.mention, check))
 
-@app.on_message(filters.command("add_euro"))
+@app.on_message(filters.command("add_euro", PREFIX))
 async def addFuncs(_: Client, message: T.Message):
     user = message.from_user
     if user.id not in SUDO_USERS:
@@ -404,3 +404,11 @@ async def addFuncs(_: Client, message: T.Message):
     _euro = int(await userEuro(_user.id) + int(_euro)
     await game.update_one({'user_id' : _user.id},{'$set' : {'euro' : _euro }})
     return await message.reply(f"**ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ ᴀᴅᴅᴇᴅ ᴇᴜʀᴏ 💷 ᴛo ᴜsᴇʀ {_user.mention} !**")
+
+@app.on_message(filters.command("active"))
+async def activeAccount(_:Client, message: T.Message):
+    if not await isPlayer(message.from_user.id):
+        await createAccount(message.from_user.id, message.from_user.first_name)
+        await message.reply("**ᴡᴇʟᴄᴏᴍᴇ ! ʏᴏᴜʀ ᴀᴄᴄᴏᴜɴᴛ ᴀᴄᴛɪᴠᴀᴛɪᴏɴ ɪs ᴄᴏɴꜰɪʀᴍᴇᴅ. sᴛᴀʀᴛ ʙᴇᴛᴛɪɴɢ ɴᴏᴡ !**")
+    else:
+        await message.reply("**ɴᴏ ꜰᴜʀᴛʜᴇʀ ᴀᴄᴛɪᴏɴ ɴᴇᴇᴅᴇᴅ - ʏᴏᴜʀ ᴀᴄᴄᴏᴜɴᴛ ɪs ᴀʟʀᴇᴀᴅʏ ᴀᴄᴛɪᴠᴇ !**")
