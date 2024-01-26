@@ -2,7 +2,7 @@ import os
 from os import getenv
 from dotenv import load_dotenv
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "6720929225:AAElxHaksDFWZIUjMKM8Kdc4HZjpJlNX1Ek")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "6876561074:AAFexWR3XeTQ9MO3hJ7M-PLN5uTVWfUbQ6U")
 API_ID = int(os.environ.get("API_ID", "26850449"))
 API_HASH = os.environ.get("API_HASH", "72a730c380e68095a8549ad7341b0608")
 PREFIX = list(getenv("COMMAND_HANDLER", ". ! /").split())
