@@ -33,9 +33,10 @@ def getReadableTime(seconds: int) -> str:
 from motor.motor_asyncio import AsyncIOMotorClient as MongoCli
 game = db.game
 
-async def createAccount(user):
+async def createAccount(user, name):
   Func = {
   'user_id' : user,
+    '_user': name,
     'euro' : 5000,
   }
   return game.insert_one(Func)
@@ -77,7 +78,7 @@ async def canPlay(tame, tru):
       return 0
   return x
 
-@Guardian.on_message(filters.command("bet"))
+@app.on_message(filters.command("bet"))
 async def betFunc(_:Client, message: T.Message):
   chat = message.chat
   user = message.from_user
@@ -353,63 +354,61 @@ async def _pay(client,message):
     await message.reply_photo(photo=random.choice(PLAY_IMG), caption="sᴜᴄᴄᴇss! {0} ᴘᴀɪᴅ {1:,} ᴄᴏɪɴs ᴛᴏ {2}.".format(from_user.mention,amount,to_user.mention))
 
 
-@Guardian.on_message(filters.command(["top","leaderboard"], COMMAND_HANDLER))
-async def _top(client,message): 
-    x = gamesdb.find().sort("coins", pymongo.DESCENDING)
-    msg = "**✨ GLOBAL LEADERBOARD**\n\n"
+@app.on_message(filters.command("gtop"))
+async def topUsers(_:Client, message: T.Message): 
+    x = game.find().sort("euro", pymongo.DESCENDING)
+    msg = "**✨ ɢʟᴏʙᴀʟ ʟᴇᴀᴅᴇʀʙᴏᴀʀᴅ ᴏꜰ ᴇᴜʀᴏ 💷 :\n\n"
     counter = 1
     for i in await x.to_list(length=None):
-        if counter == 11:
+        if counter == 26:
             break
-        if i["coins"] == 0:
+        if i["euro"] == 0:
             pass
         else:
-            user_name = i["username"]
-            link = f"[{user_name}](https://t.me/{user_name})"
-            if not user_name:
-                user_name = i["user_id"]
+            user = i["user_id"]
+            sugg = i["_user"]
+            link = f"[{sugg}](tg://user?id={user})"
+            if not sugg:
+                _check = i["user_id"]
                 try:
-                    link = (await app.get_users(user_name)).mention
+                    link = (await app.get_chat(_check)).mention
                 except Exception as e:
-                    print(e)
-                    link = user_name
+                    link = _check
             
-            coins = i["coins"]
+            euro = i["euro"]
             if counter == 1:
-               msg += f"{counter:02d}.** {link}** ⪧ {coins:,}\n"
+               msg += f"{counter:2d}.** {link}** : `{euro}`\n"
                 
             else:
-                msg += f"{counter:02d}.** {link}** ⪧ {coins:,}\n"
+                msg += f"{counter:2d}.** {link}** : `{euro}`\n"
             counter += 1
-    await message.reply(msg,disable_web_page_preview=True)
+    await message.reply(msg, disable_web_page_preview=True)
     
-@Guardian.on_message(filters.command(["bal","balance","mycoins"], COMMAND_HANDLER))
-async def _bal(client,message):
+@app.on_message(filters.command("wallet"))
+async def userBalance(_:Client, message: T.Message):
     user = message.from_user
-    if not await is_player(user.id):
-        await create_account(user.id,message.from_user.username)
-    coins = await user_wallet(user.id)
-    await message.reply_photo(photo=random.choice(PLAY_IMG), caption="⁕ {0}'s ᴡᴀʟʟᴇᴛ...\n≪━─━─━─━─◈─━─━─━─━≫\n**€ ⪧** `{1:,}` \n**≪━─━─━─━─◈─━─━─━─━≫".format(user.mention,coins))
+    if not await isPlayer(user.id):
+        return await message.reply("**ʏᴏᴜ ʜᴀᴠᴇɴ'ᴛ ꜱᴛᴀʀᴛᴇᴅ ʏᴇᴛ !**")
+    check = await userEuro(user.id)
+    await message.reply("**ᴄᴜʀʀᴇɴᴛ ᴇᴜʀᴏ 💷 ᴡᴀʟʟᴇᴛ ᴏꜰ ᴜꜱᴇʀ {} :** `{}` ".format(user.mention, check))
 
-    
-    
-@Guardian.on_message(filters.command("addcoins", COMMAND_HANDLER))
-async def _bal(client,message):
+@app.on_message(filters.command("add_euro"))
+async def addFuncs(_: Client, message: T.Message):
     user = message.from_user
-    if user.id not in SUPREME_USERS:
-        return 
+    if user.id not in SUDOERS:
+        return await message.reply("**ɴᴏᴛ ᴀᴜᴛʜᴏʀɪꜱᴇᴅ !**")
     if not message.reply_to_message:
-        return await message.reply_photo(photo=random.choice(PLAY_IMG), caption="**ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴜsᴇʀ**")
+        return await message.reply("**ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴜsᴇʀ !**")
     if not message.reply_to_message.from_user:
-        return await message.reply_photo(photo=random.choice(PLAY_IMG), caption="**ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴜsᴇʀ**")
-    from_user = message.reply_to_message.from_user
-    if not await is_player(from_user.id):
-        await create_account(from_user.id,from_user.username) 
+        return await message.reply("**ʀᴇᴘʟʏ ᴛᴏ ᴀ ᴜsᴇʀ !**")
+    _user = message.reply_to_message.from_user
+    if not await isPlayer(_user.id):
+        return await message.reply("**ᴜꜱᴇʀ ʜᴀᴠᴇɴ'ᴛ ꜱᴛᴀʀᴛᴇᴅ ʏᴇᴛ !**")
     if len(message.command) < 2:
-        return await message.reply_photo(photo=random.choice(PLAY_IMG), caption="**ɢɪᴠᴇ ᴍᴇ ᴀ ᴠᴀʟᴜᴇ ᴛᴏ sᴇᴛ ᴜsᴇʀs ᴄᴏɪɴs....**")
-    dalcs = message.command[1]
-    if not dalcs.isdigit():
-        return await message.reply_photo(photo=random.choice(PLAY_IMG), caption="**ᴛʜᴇ ᴘʀᴏᴠɪᴅᴇᴅ ᴠᴀʟᴜᴇ ɪs ɴᴏᴛ ᴀ ɪɴᴛᴇɢᴇʀ....**")
-    dalcs = abs(int(dalcs))
-    await gamesdb.update_one({'user_id' : from_user.id},{'$set' : {'coins' : dalcs }})
-    return await message.reply_photo(photo=random.choice(PLAY_IMG), caption=f"sᴜᴄᴄᴇss ! sᴇᴛ ᴛʜᴇ ᴄᴏɪɴs ᴏғ ᴜsᴇʀ {from_user.mention} ᴛo {dalcs} ᴄᴏɪɴs .")
+        return await message.reply("**ɢɪᴠᴇ ᴍᴇ ᴀ ᴠᴀʟᴜᴇ ᴛᴏ ᴀᴅᴅ ᴇᴜʀᴏ 💷 ᴛᴏ ᴜꜱᴇʀ...**")
+    _euro = message.command[1]
+    if not _euro.isdigit():
+        return await message.reply("**ᴛʜᴇ ᴘʀᴏᴠɪᴅᴇᴅ ᴠᴀʟᴜᴇ ɪs ɴᴏᴛ ᴀ ɪɴᴛᴇɢᴇʀ...**")
+    _euro = int(await userEuro(_user.id) + int(_euro)
+    await game.update_one({'user_id' : _user.id},{'$set' : {'euro' : _euro }})
+    return await message.reply(f"**ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ ᴀᴅᴅᴇᴅ ᴇᴜʀᴏ 💷 ᴛo ᴜsᴇʀ {_user.mention} !**")
