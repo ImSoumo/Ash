@@ -3,10 +3,10 @@ dnspython==2.1.0
 motor
 pillow
 pyrogram
+pymongo
 requests
 TgCrypto
 uvloop
 python-dotenv
-telegraph
 httpx[http2]
 asyncio
