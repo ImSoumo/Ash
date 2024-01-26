@@ -251,63 +251,7 @@ async def basketFunc(_:Client, message: T.Message):
       await game.update_one({'user_id' : user.id}, {'$set' : {'euro' : _wallet}})
       await asyncio.sleep(5)
       return await msg.edit_caption("**❤️‍🔥 ᴡᴏᴡ ! ʏᴏᴜ ᴡᴏɴ** `{}` **ᴇᴜʀᴏ 💷**\n• **ᴄᴜʀᴇᴇɴᴛ ʙᴀʟᴀɴᴄᴇ :** `{}`**ᴇᴜʀᴏ 💷.**".format(_bet, _wallet))
-
-                                                                                                            
-regex_upvote = r"^((?i)\+|\+\+|\+1|thx|thanx|thanks|pro|cool|good|pro|pero|op|nice|noice|best|uwu|owo|right|correct|peru|piro|👍|\+100)$"
-regex_downvote = r"^(\-|\-\-|\-1|👎|noob|baka|idiot|chutiya|nub|noob|wrong|incorrect|chaprii|chapri|weak|\-100)$"
-
-@app.on_message(
-  filters.text
-  & filters.group
-  & filters.incoming
-  & filters.reply
-  & filters.regex(regex_upvote)
-  & ~filters.via_bot
-  & ~filters.bot,
-  group= 5,
-)
-async def upvoteFunc(_:Client, message:T.Mesage):
-    if not message.reply_to_message.from_user:
-        return
-    user = message.reply_to_message.from_user
-    if user.id == BOT_ID:
-        return
-    if not await isPlayer(user.id):
-        await createAccount(user.id, user.first_name)
-    if user.id == message.from_user.id:
-        return
-    coins = await userEuro(user.id)
-    _new = coins + 150
-    await game.update_one({"user_id": user.id}, {'$set':{'euro' : _new}})
-    await message.reply("**ᴀᴅᴅᴇᴅ** `150` **ᴇᴜʀᴏ 💷 ᴛᴏ {} ᴡᴀʟʟᴇᴛ.**".format(user.mention))
-    
-@app.on_message(
-    filters.text
-    & filters.group
-    & filters.incoming
-    & filters.reply
-    & filters.regex(regex_downvote)
-    & ~filters.via_bot
-    & ~filters.me
-    & ~filters.bot,
-    group=3,  
-)
-async def downvoteFunc(_:Client, message:T.Message):
-    if not message.reply_to_message.from_user:
-        return
-    user = message.reply_to_message.from_user
-    if user.id == BOT_ID:
-        return
-    if not await isPlayer(user.id):
-        await createAccount(user.id, user.first_name)
-    if user.id == message.from_user.id:
-        return
-    coins = await userEuro(user.id)
-    _new = coins - 250
-    await game.update_one({"user_id": user.id}, {'$set':{'euro' : _new}})
-    await message.reply("**ᴛᴏᴏᴋ** `250` **ᴇᴜʀᴏ 💷 ғʀᴏᴍ {} ᴡᴀʟʟᴇᴛ.**".format(user.mention))
-    
-    
+                                                                                      
 @app.on_message(filters.command("pay", PREFIX) & filters.group)
 async def payFunc(_:Client, message: T.Message):
     if not message.reply_to_message:
