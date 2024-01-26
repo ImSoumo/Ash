@@ -319,8 +319,8 @@ async def payFunc(_:Client, message: T.Message):
             return
     if not await isPlayer(_user.id):
         return await message.reply("**ʀᴇᴄɪᴠᴇʀ ᴅᴏᴇꜱɴ'ᴛ ꜱᴛᴀʀᴛᴇᴅ ʙᴏᴛ ʏᴇᴛ !")
-    if not await is_player(_from.id):
-        return return await message.reply("**ʏᴏᴜ ʜᴀᴠᴇɴ'ᴛ ꜱᴛᴀʀᴛᴇᴅ ʏᴇᴛ !**")
+    if not await isPlayer(_from.id):
+        return await message.reply("**ʏᴏᴜ ʜᴀᴠᴇɴ'ᴛ ꜱᴛᴀʀᴛᴇᴅ ʏᴇᴛ !**")
     if len(message.command) < 2:
         return await message.reply("**Usᴀɢᴇ : /ᴘᴀʏ** `100`")
     amount = message.command[1]
