@@ -1,7 +1,7 @@
 aiohttp
 dnspython==2.1.0
 motor
-openai
+openai==0.28
 pyrogram
 TgCrypto
 uvloop
