@@ -1,19 +1,18 @@
 import Config
 import asyncio
-import openai
+from openai import OpenAI
 from Lena import app
 from pyrogram import Client, types as TS
 OPENAI = "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"
 
 chatStr = ''
-
+client = OpenAI(api_key=OPENAI)
 async def chatModel(prompt):
     global chatStr
-    openai.api_key = OPENAI
     chatStr += f"Rayen: {prompt}\nLenaAi:"
-    response = openai.Completion.create(
+    response = client.completions.create(
         model="davinci-002",
-        prompt=chatStr,
+        prompt="",
         temperature=1,
         max_tokens=256,
         top_p=1,
