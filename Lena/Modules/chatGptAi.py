@@ -7,10 +7,10 @@ OPENAI = "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"
 
 chatStr = ''
 client = OpenAI(api_key=OPENAI)
-async def chatModel(prompt):
+def chatModel(prompt):
     global chatStr
     chatStr += f"Rayen: {prompt}\nLenaAi:"
-    response = client.Completion.create(
+    response = client.completions.create(
         model="davinci-002",
         prompt="",
         temperature=1,
@@ -25,7 +25,7 @@ async def chatModel(prompt):
 @app.on_message()
 async def lenaAi(_:Client, message:TS.Message):
     try:
-        reply = await chatModel(message.text)
+        reply = chatModel(message.text)
         await message.reply(reply)
     except Exception as e:
         await message.reply(e)
