@@ -1,6 +1,7 @@
 import Config
 import asyncio
 import openai
+from Lena import app
 from pyrogram import Client, types as TS
 OPENAI = "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"
 
