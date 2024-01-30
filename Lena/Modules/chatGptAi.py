@@ -10,7 +10,7 @@ client = OpenAI(api_key=OPENAI)
 async def chatModel(prompt):
     global chatStr
     chatStr += f"Rayen: {prompt}\nLenaAi:"
-    response = client.completions.create(
+    response = client.Completion.create(
         model="davinci-002",
         prompt="",
         temperature=1,
