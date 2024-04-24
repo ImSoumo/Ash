@@ -1,1 +1,1 @@
-worker: python3 -m Lena
+worker: python3 -m Ash
