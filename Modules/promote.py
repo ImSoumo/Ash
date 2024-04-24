@@ -108,7 +108,7 @@ async def _promote_users(app, message: Message) -> None:
             reply_markup=KEYBOARDS
         )    
     except BadRequest as exc:
-        return await message.reply(f"Eʀʀᴏʀ Oᴄᴄᴜʀʀᴇᴅ Wʜɪʟᴇ Pʀᴏᴍᴏᴛɪɴɢ : {exc.message}")
+        return await message.reply(f"Eʀʀᴏʀ Oᴄᴄᴜʀʀᴇᴅ Wʜɪʟᴇ Pʀᴏᴍᴏᴛɪɴɢ : {exc}")
     except Exception as exs:
         return await message.reply_text(f"Eʀʀᴏʀ Oᴄᴄᴜʀʀᴇᴅ Wʜɪʟᴇ Pʀᴏᴍᴏᴛɪɴɢ : {exs}")
 
@@ -160,7 +160,7 @@ async def _demote_user(app, message:Message) -> None:
         await app.promote_chat_member(message.chat.id, xxx.user.id, DEMOTE_USER)
         await message.reply_text(f"Sᴜᴄᴄᴇssғᴜʟʟʏ Dᴇᴍᴏᴛᴇᴅ {mention} !")
     except BadRequest as exc:
-        return await message.reply(f"ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴡʜɪʟᴇ ᴅᴇᴍᴏᴛɪɴɢ : {exc.message}")           
+        return await message.reply(f"ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴡʜɪʟᴇ ᴅᴇᴍᴏᴛɪɴɢ : {exc}")           
 
 KEYBOARDS_BUTTON = InlineKeyboardMarkup([[InlineKeyboardButton("Cʟᴏsᴇ",callback_data="admin_close")]])
         
