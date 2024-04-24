@@ -34,7 +34,7 @@ async def users_or_reasons(message: Message, sender_chat=False) -> None:
     replied = message.reply_to_message
     if replied:
         if not replied.from_user:
-            if replied.sender_chat and replied.sender_chat != message.chat.id and sender_chat):
+            if replied.sender_chat and replied.sender_chat != message.chat.id and sender_chat:
                 sender = replied.sender_chat.id
             else:
                 return None, None
