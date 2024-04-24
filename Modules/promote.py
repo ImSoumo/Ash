@@ -110,7 +110,7 @@ async def _promote_users(app, message: Message) -> None:
     except BadRequest as exc:
         return await message.reply(f"Eʀʀᴏʀ Oᴄᴄᴜʀʀᴇᴅ Wʜɪʟᴇ Pʀᴏᴍᴏᴛɪɴɢ : {exc.message}")
     except Exception as exs:
-        return await message.reply_text(f"Eʀʀᴏʀ Oᴄᴄᴜʀʀᴇᴅ Wʜɪʟᴇ Pʀᴏᴍᴏᴛɪɴɢ : {exs}"})
+        return await message.reply_text(f"Eʀʀᴏʀ Oᴄᴄᴜʀʀᴇᴅ Wʜɪʟᴇ Pʀᴏᴍᴏᴛɪɴɢ : {exs}")
 
 @app.on_callback_query(filters.regex(pattern=r"demote_(.*)"))
 async def demote_perses(app:Client, query:CallbackQuery) -> None:
