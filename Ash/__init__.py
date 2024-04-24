@@ -6,7 +6,7 @@ from pyrogram.client import Client
 
 logging.basicConfig(
     level=logging.INFO,
-    format="[Asʜ-Kᴇᴛᴄʜᴜᴍ] %(message)s"
+    format="[Asʜ-Kᴇᴛᴄʜᴜᴍ] %(message)s",
     handlers=[logging.FileHandler("logs.txt"), logging.StreamHandler()]
 )
 LOGGER = logging.getLogger("[Asʜ-Kᴇᴛᴄʜᴜᴍ]")
