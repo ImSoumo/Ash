@@ -1,11 +1,18 @@
 import time
 import asyncio
-from Lena import app, db
+from Ash import app
 from datetime import date
 from pyrogram import Client, filters, types as T
 from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 
 # | Rankings DB Functions
+
+from motor.motor_asyncio import AsyncIOMotorClient as MongoDB
+import Anony
+
+db = (MongoDB(Anony.MONGO_URI)).MAIN
+
+
 rankdb = db.rank
 ranser = db.ranser
 
@@ -56,7 +63,7 @@ async def userName(app, user: int):
 async def incUser(_, message: T.Message):
     if message.text:
         if (
-            message.text.strip() == "/rankings@LenaAiBot"
+            message.text.strip() == "/rankings@"
             or message.text.strip() == "/rankings"
         ):
             await ranser.insert_one({"user_id": message.from_user.id})
