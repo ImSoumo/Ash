@@ -103,7 +103,7 @@ async def _promote_users(app, message: Message) -> None:
         if checks[1] != None:
             await app.set_administrator_title(message.chat.id, checks[0], checks[1])
         return await message.reply_photo(
-            photo="AgACAgUAAx0CW40BMwABATcgZijiuJ1lmBg6jLtmOCIkhsnzPDoAAvG_MRsHoklVFa1gVCktLncACAEAAwIAA3kABx4E",
+            photo="https://telegra.ph/file/a784b68f72ca86117da62.jpg",
             caption=PROMOTE_MESSAGE,
             reply_markup=KEYBOARDS
         )    
