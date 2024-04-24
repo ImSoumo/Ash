@@ -147,7 +147,7 @@ async def promote_perses(app:Client, query:CallbackQuery) -> None:
     else:
         await app.answer_callback_query(query.id, "Yᴏᴜ Dɪᴅɴ'ᴛ Pʀᴏᴍᴏᴛᴇᴅ Tʜᴀᴛ Usᴇʀ !")
 
-@pgram.on_message(command(commands=("demote")))
+@app.on_message(filters.command("demote"))
 async def _demote_user(app, message:Message) -> None:
     if len(message.command) == 1:
         return await message.reply("sʏɴᴛᴀx: ɢɪᴠᴇ ᴍᴇ ᴀ ᴜsᴇʀ ɪᴅ ᴏʀ ᴜsᴇʀɴᴀᴍᴇ ᴛᴏ ᴅᴇᴍᴏᴛᴇ")
