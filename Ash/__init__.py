@@ -20,6 +20,6 @@ app = Client(
     bot_token=Anony.BOT_TOKEN,
     plugins=dict(root="Modules"),
     parse_mode=enums.ParseMode.MARKDOWN,
-    #mongodb=dict(connection=AsyncIOMotorClient(Anony.MONGO_URI), remove_peers=False),
+    mongodb=dict(connection=AsyncIOMotorClient(Anony.MONGO_URI)),
     max_concurrent_transmissions=Anony.MAX_CONCURRENT_TRANSMISSIONS
 )
