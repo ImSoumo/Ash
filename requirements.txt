@@ -1,10 +1,10 @@
-aiohttp
-dnspython==2.1.0
 motor
-openai
-pyrogram
+aiohttp
+dnspython
+pyrofork
 TgCrypto
 uvloop
 python-dotenv
 httpx[http2]
 asyncio
+requests
