@@ -187,7 +187,7 @@ async def _members_actions(app, message:Message) -> None:
             if new_user.custom_title:
                 await app.send_message(
                     chat_id=chat.id,
-                    f"#ᴘʀᴏᴍᴏᴛᴇᴅ_ᴜsᴇʀ\n» ᴀ ɴᴇᴡ ᴄʜᴀᴛ ᴀᴄᴛɪᴠɪᴛʏ ʜᴀᴘᴘᴇɴᴇᴅ {message.from_user.mention} ᴘʀᴏᴍᴏᴛᴇᴅ {new_user.user.mention} ᴡɪᴛʜ ᴛɪᴛʟᴇ {new_user.custom_title} !",
+                    text=f"#ᴘʀᴏᴍᴏᴛᴇᴅ_ᴜsᴇʀ\n» ᴀ ɴᴇᴡ ᴄʜᴀᴛ ᴀᴄᴛɪᴠɪᴛʏ ʜᴀᴘᴘᴇɴᴇᴅ {message.from_user.mention} ᴘʀᴏᴍᴏᴛᴇᴅ {new_user.user.mention} ᴡɪᴛʜ ᴛɪᴛʟᴇ {new_user.custom_title} !",
                     reply_markup=KEYBOARDS_BUTTON
                 )
     except Exception:
