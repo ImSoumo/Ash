@@ -47,6 +47,23 @@ async def getSudoers():
 loop = asyncio.get_event_loop()
 loop.run_until_complete(getSudoers())
 
+
+from pymongo import MongoClient
+
+
+app = Client(
+    name="Asʜ-Kᴇᴛᴄʜᴜᴍ",
+    api_id=Anony.API_ID,
+    api_hash=Anony.API_HASH,
+    bot_token=Anony.BOT_TOKEN,
+    plugins=dict(root="Modules"),
+    parse_mode=enums.ParseMode.MARKDOWN,
+    mongodb=dict(connection=MongoClient(Anony.MONGO_URI), remove_peers=False),
+    max_concurrent_transmissions=Anony.MAX_CONCURRENT_TRANSMISSIONS
+)
+
+
+
 app = Client(
     "Lena",
     bot_token=Config.BOT_TOKEN,
