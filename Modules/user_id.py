@@ -5,7 +5,7 @@ from pyrogram.types import Message
 from pyrogram.enums import ChatType
 
 @app.on_message(filters.command("id"))
-async def users_id(app, message:Message) -> None:
+async def users_id(app, message: Message):
     users = ""
     users += f"ᴜsᴇʀ {message.from_user.mention} ɪᴅ : `{message.from_user.id}`\n"
     users += f"ᴍᴇssᴀɢᴇ ɪᴅ : `{message.id}`\n"
