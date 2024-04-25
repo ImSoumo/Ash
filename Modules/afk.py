@@ -7,8 +7,12 @@ from Ash.DB import add_afk, is_afk, remove_afk
 from Ash.helpers import get_readable_time, put_cleanmode
 
 
-@app.on_message(filters.command(["afk", f"afk@{app.me.username}"]))
-async def active_afk(_, message: Message):
+
+
+@app.on_message(
+    filters.command("afk", ["!", "/", ".", "?"])
+)
+async def active_userafk(app, message:Message) -> None:
     if message.sender_chat:
         return
     user_id = message.from_user.id
@@ -23,40 +27,40 @@ async def active_afk(_, message: Message):
             seenago = get_readable_time((int(time.time() - timeafk)))
             if afktype == "text":
                 send = await message.reply_text(
-                    f"**{message.from_user.first_name}** is back online and was away for {seenago}",
-                    disable_web_page_preview=True,
+                    f"**{message.from_user.first_name}** ɪs ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀs ᴀᴡᴀʏ ғᴏʀ {seenago}",
+                    disable_web_page_preview=True
                 )
             if afktype == "text_reason":
                 send = await message.reply_text(
-                    f"**{message.from_user.first_name}** is back online and was away for {seenago}\n\nReason: `{reasonafk}`",
-                    disable_web_page_preview=True,
+                    f"**{message.from_user.first_name}** ɪs ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀs ᴀᴡᴀʏ ғᴏʀ {seenago}\n\nRᴇᴀsᴏɴ : {reasonafk}",
+                    disable_web_page_preview=True
                 )
             if afktype == "animation":
                 if str(reasonafk) == "None":
                     send =  await message.reply_animation(
                         data,
-                        caption=f"**{message.from_user.first_name}** is back online and was away for {seenago}",
+                        caption=f"**{message.from_user.first_name}** ɪs ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀs ᴀᴡᴀʏ ғᴏʀ {seenago}"
                     )
                 else:
                     send = await message.reply_animation(
                         data,
-                        caption=f"**{message.from_user.first_name}** is back online and was away for {seenago}\n\nReason: `{reasonafk}`",
+                        caption=f"**{message.from_user.first_name}** ɪs ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀs ᴀᴡᴀʏ ғᴏʀ {seenago}\n\nRᴇᴀsᴏɴ : {reasonafk}"
                     )
             if afktype == "photo":
                 if str(reasonafk) == "None":
                     send = await message.reply_photo(
                         photo=f"downloads/{user_id}.jpg",
-                        caption=f"**{message.from_user.first_name}** is back online and was away for {seenago}",
+                        caption=f"**{message.from_user.first_name}** ɪs ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀs ᴀᴡᴀʏ ғᴏʀ {seenago}"
                     )
                 else:
                     send = await message.reply_photo(
                         photo=f"downloads/{user_id}.jpg",
-                        caption=f"**{message.from_user.first_name}** is back online and was away for {seenago}\n\nReason: `{reasonafk}`",
+                        caption=f"**{message.from_user.first_name}** ɪs ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀs ᴀᴡᴀʏ ғᴏʀ {seenago}\n\nRᴇᴀsᴏɴ : {reasonafk}"
                     )
         except Exception as e:
             send =  await message.reply_text(
-                f"**{message.from_user.first_name}** is back online",
-                disable_web_page_preview=True,
+                f"**{message.from_user.first_name}** ɪs ʙᴀᴄᴋ ᴏɴʟɪɴᴇ",
+                disable_web_page_preview=True
             )
         await put_cleanmode(message.chat.id, send.id)
         return
@@ -170,13 +174,10 @@ async def active_afk(_, message: Message):
 
     await add_afk(user_id, details)
     send = await message.reply_text(
-        f"{message.from_user.first_name} is now afk!"
+        f"{message.from_user.first_name} ɪs ɴᴏᴡ ᴀғᴋ !"
     )
     await put_cleanmode(message.chat.id, send.id)
 
-
-
-chat_watcher_group = 1
 
 @app.on_message(
     ~filters.bot & ~filters.via_bot & ~filters.me, group=1
@@ -399,17 +400,3 @@ async def chat_watcher_func(_, message):
         await put_cleanmode(message.chat.id, send.id)
     except:
         return
-
-
-@app.on_message(filters.new_chat_members, group=69)
-async def welcome(_, message: Message):
-    chat_id = message.chat.id
-    for member in message.new_chat_members:
-        try:
-            if member.id == _.me.id:
-                send =  await message.reply_text(
-                    f"Thanks for having me in {message.chat.title}\n\n{_.me.first_name} is alive."
-                )
-                await put_cleanmode(message.chat.id, send.id)
-        except:
-            return
