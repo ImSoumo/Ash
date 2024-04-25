@@ -1,4 +1,8 @@
-from Modules.rankings import db
+from motor.motor_asyncio import AsyncIOMotorClient as MongoDB
+import Anony
+
+db = (MongoDB(Anony.MONGO_URI)).MAIN
+
 
 cleandb = db.cleanmode
 cleanmode = {}
