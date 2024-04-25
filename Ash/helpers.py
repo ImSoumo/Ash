@@ -1,12 +1,10 @@
 import asyncio
 from typing import Union
 from datetime import datetime, timedelta
-from Ash import app
+from Ash import app, cleanmode
 from Ash.DB import is_cleanmode_on
 from pyrogram.errors import FloodWait
 from pyrogram.types import InlineKeyboardButton
-
-cleanmode = {}
 
 
 def get_readable_time(seconds: int) -> str:
