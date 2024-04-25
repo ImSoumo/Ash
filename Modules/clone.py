@@ -12,7 +12,7 @@ async def clone(bot, msg: Message):
     phone = msg.command[1]
     try:
         await text.edit("Booting Your Client")                   
-        client = Client(":memory:", API_ID, API_HASH, bot_token=phone, plugins=dict{root="Modules"})
+        client = Client(":memory:", API_ID, API_HASH, bot_token=phone, plugins=dict(root="Modules"))
         await client.start()
         user = await client.get_me()
         await msg.reply(f"Your Client Has Been Successfully Started As @{user.username}!\n\nThanks for Cloning.")
