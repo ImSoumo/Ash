@@ -175,7 +175,7 @@ async def active_afk(_, ctx: Message):
         }
 
     await add_afk(user_id, details)
-    send = await ctx.reply_msg(
+    send = await ctx.reply_text(
         ("{usr} [<code>{id}</code>] ɪꜱ ɴᴏᴡ ᴀꜰᴋ !").format(usr=ctx.from_user.mention, id=ctx.from_user.id)
     )
     await put_cleanmode(ctx.chat.id, send.id)
@@ -186,7 +186,7 @@ async def afk_state(Guardian, ctx: Message):
     if not ctx.from_user:
         return
     if len(ctx.command) == 1:
-        return await ctx.reply_msg(
+        return await ctx.reply_text(
             ("**ᴜꜱᴀɢᴇ :** /afkdel [ᴇɴᴀʙʟᴇ|ᴅɪꜱᴀʙʟᴇ] ᴛᴏ ᴇɴᴀʙʟᴇ ᴏʀ ᴅɪꜱᴀʙʟᴇ ᴀᴜᴛᴏ ᴅᴇʟᴇᴛᴇ ᴍᴇꜱꜱᴀɢᴇ.")
         )
     chat_id = ctx.chat.id
