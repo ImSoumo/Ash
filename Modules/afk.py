@@ -172,7 +172,7 @@ async def active_afk(_, message: Message):
     send = await message.reply_text(
         f"{message.from_user.first_name} is now afk!"
     )
-    await put_cleanmode(message.chat.id, send.message_id)
+    await put_cleanmode(message.chat.id, send.id)
 
 
 
