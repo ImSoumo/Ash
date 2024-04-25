@@ -4,7 +4,7 @@ from pyrogram.types import Message
 from Anony import API_ID, API_HASH
 
 
-@App.on_message(filters.command("clone"))
+@app.on_message(filters.command("clone"))
 async def clone(bot, msg: Message):
     chat = msg.chat
     text = await msg.reply_photo(photo="https://graph.org/file/1f6b3738b92815eaf7f66.jpg", caption="**ᴜsᴀɢᴇ :** `/clone` **ʙᴏᴛ ᴛᴏᴋᴇɴ**")
