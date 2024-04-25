@@ -9,7 +9,7 @@ from Ash.Core import put_cleanmode
 
 X = ["!", ".", "/", "?", "$"]
 
-@app.on_message(filters.command(["afk"], X))
+@app.on_message(filters.command(["test"], X))
 async def active_afk(_, ctx: Message):
     if ctx.sender_chat:
         return await ctx.reply("ᴛʜɪꜱ ꜰᴇᴀᴛᴜʀᴇꜱ ɴᴏᴛ ꜱᴜᴘᴘᴏʀᴛᴇᴅ ꜰᴏʀ ᴄʜᴀɴɴᴇʟ.")
