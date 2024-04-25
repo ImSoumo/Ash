@@ -1,5 +1,5 @@
 
-from Ash.db import db
+from Ash.DB import db
 
 usersdb = db["_users"]
 cleandb = db["_cleanmode"]
