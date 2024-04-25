@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 from logging import getLogger
 from typing import Union
 
-import emoji
 from pyrogram.errors import (
     FloodWait,
     InputUserDeactivated,
