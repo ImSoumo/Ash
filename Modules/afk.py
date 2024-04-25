@@ -58,7 +58,7 @@ async def active_afk(_, message: Message):
                 f"**{message.from_user.first_name}** is back online",
                 disable_web_page_preview=True,
             )
-        await put_cleanmode(message.chat.id, send.message_id)
+        await put_cleanmode(message.chat.id, send.id)
         return
     if len(message.command) == 1 and not message.reply_to_message:
         details = {
@@ -178,7 +178,9 @@ async def active_afk(_, message: Message):
 
 chat_watcher_group = 1
 
-@app.on_message(~filters.bot, group=1)
+@app.on_message(
+    ~filters.bot & ~filters.via_bot & ~filters.me, group=1
+)
 async def chat_watcher_func(_, message):
     if message.sender_chat:
         return
