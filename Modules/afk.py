@@ -7,7 +7,7 @@ from Ash.DB import add_afk, is_afk, remove_afk
 from Ash.helpers import get_readable_time, put_cleanmode
 
 
-@app.on_message(filters.command(["afk", f"afk@{app.me.username}"]) & ~filters.edited)
+@app.on_message(filters.command(["afk", f"afk@{app.me.username}"]))
 async def active_afk(_, message: Message):
     if message.sender_chat:
         return
