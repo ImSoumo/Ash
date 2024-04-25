@@ -4,6 +4,8 @@ from pyrogram import enums
 from pyrogram.client import Client
 from motor.motor_asyncio import AsyncIOMotorClient
 
+cleanmode = {}
+
 logging.basicConfig(
     level=logging.INFO,
     format="[Asʜ-Kᴇᴛᴄʜᴜᴍ] %(message)s",
