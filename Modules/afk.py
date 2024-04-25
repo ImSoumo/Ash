@@ -178,7 +178,7 @@ async def active_afk(_, message: Message):
 
 chat_watcher_group = 1
 
-@app.on_message(~filters.bot, group=2)
+@app.on_message(~filters.bot, group=1)
 async def chat_watcher_func(_, message):
     if message.sender_chat:
         return
@@ -394,7 +394,7 @@ async def chat_watcher_func(_, message):
         except:
             return
     try:
-        await put_cleanmode(message.chat.id, send.message_id)
+        await put_cleanmode(message.chat.id, send.id)
     except:
         return
 
@@ -408,6 +408,6 @@ async def welcome(_, message: Message):
                 send =  await message.reply_text(
                     f"Thanks for having me in {message.chat.title}\n\n{_.me.first_name} is alive."
                 )
-                await put_cleanmode(message.chat.id, send.message_id)
+                await put_cleanmode(message.chat.id, send.id)
         except:
             return
