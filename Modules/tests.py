@@ -4,14 +4,13 @@ from pyrogram import Client, enums, filters
 from pyrogram.types import Message
 from Ash.AFK_db import add_afk, cleanmode_off, cleanmode_on, is_afk, remove_afk
 from Ash import app
-from Ash.Admin import adminsOnly
 from Ash.Helper import get_readable_time2
 from Ash.Core import put_cleanmode
 
 X = ["!", ".", "/", "?", "$"]
 
 @app.on_message(filters.command(["afk"], X))
-async def active_afk(_, ctx: Message, strings):
+async def active_afk(_, ctx: Message):
     if ctx.sender_chat:
         return await ctx.reply("ᴛʜɪꜱ ꜰᴇᴀᴛᴜʀᴇꜱ ɴᴏᴛ ꜱᴜᴘᴘᴏʀᴛᴇᴅ ꜰᴏʀ ᴄʜᴀɴɴᴇʟ.")
     user_id = ctx.from_user.id
@@ -183,7 +182,6 @@ async def active_afk(_, ctx: Message, strings):
 
 
 @app.on_message(filters.command(["afkdel"], X) & filters.group)
-@adminsOnly("can_change_info")
 async def afk_state(Guardian, ctx: Message):
     if not ctx.from_user:
         return
