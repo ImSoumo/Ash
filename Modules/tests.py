@@ -34,7 +34,7 @@ async def active_afk(_, ctx: Message):
                     if str(reasonafk) == "None"
                     else await ctx.reply_animation(
                         data,
-                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** `{reas}`\n\n").format(
+                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** {reas}\n\n").format(
                             usr=ctx.from_user.mention,
                             id=ctx.from_user.id,
                             tm=seenago,
@@ -53,7 +53,7 @@ async def active_afk(_, ctx: Message):
                     if str(reasonafk) == "None"
                     else await ctx.reply_photo(
                         photo=f"downloads/{user_id}.jpg",
-                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** `{reas}`\n\n").format(
+                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** {reas}\n\n").format(
                             usr=ctx.from_user.first_name, tm=seenago, reas=reasonafk
                         ),
                     )
@@ -67,7 +67,7 @@ async def active_afk(_, ctx: Message):
                 )
             elif afktype == "text_reason":
                 send = await ctx.reply_text(
-                    ("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** `{reas}`\n\n").format(
+                    ("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** {reas}\n\n").format(
                         usr=ctx.from_user.mention,
                         id=ctx.from_user.id,
                         tm=seenago,
@@ -224,7 +224,7 @@ async def afk_watcher_func(self: Client, ctx: Message):
                     usr=user_name, id=userid, tm=seenago
                 )
             if afktype == "text_reason":
-                msg += ("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** `{reas}`\n\n").format(
+                msg += ("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** {reas}\n\n").format(
                     usr=user_name, id=userid, tm=seenago, reas=reasonafk
                 )
             if afktype == "animation":
@@ -238,7 +238,7 @@ async def afk_watcher_func(self: Client, ctx: Message):
                 else:
                     send = await ctx.reply_animation(
                         data,
-                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** `{reas}`\n\n").format(
+                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** {reas}\n\n").format(
                             usr=user_name, id=userid, tm=seenago, reas=reasonafk
                         ),
                     )
@@ -253,7 +253,7 @@ async def afk_watcher_func(self: Client, ctx: Message):
                 else:
                     send = await ctx.reply_photo(
                         photo=f"downloads/{userid}.jpg",
-                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** `{reas}`\n\n").format(
+                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** {reas}\n\n").format(
                             usr=user_name, id=userid, tm=seenago, reas=reasonafk
                         ),
                     )
