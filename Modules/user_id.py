@@ -75,7 +75,7 @@ async def users_id(app, message: Message) -> None:
     users_info = "┈───────┈🎐┈───────┈\n\n"
 
     # Message ID and sender's ID
-    users_info += f"» ᴍᴇssᴀɢᴇ ɪᴅ : `{message.message_id}`\n"
+    users_info += f"» ᴍᴇssᴀɢᴇ ɪᴅ : `{message.id}`\n"
     users_info += f"» ᴜsᴇʀ {message.from_user.mention} ɪᴅ : `{message.from_user.id}`\n\n"
 
     # Handling reply-to message details
@@ -83,7 +83,7 @@ async def users_id(app, message: Message) -> None:
         reply_message = message.reply_to_message
 
         if reply_message.from_user:
-            users_info += f"» ʀᴇᴘʟɪᴇᴅ ᴍᴇssᴀɢᴇ ɪᴅ : `{reply_message.message_id}`\n"
+            users_info += f"» ʀᴇᴘʟɪᴇᴅ ᴍᴇssᴀɢᴇ ɪᴅ : `{reply_message.id}`\n"
             users_info += f"» ʀᴇᴘʟɪᴇᴅ ᴜsᴇʀ {reply_message.from_user.mention}'s ɪᴅ : `{reply_message.from_user.id}`\n"
 
         if reply_message.photo:
