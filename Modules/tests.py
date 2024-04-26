@@ -208,20 +208,6 @@ async def afk_watcher_func(self: Client, ctx: Message):
         return
     userid = ctx.from_user.id
     user_name = ctx.from_user.mention
-"""    
-    if ctx.entities:
-        possible = "test"
-        message_text = ctx.text or ctx.caption
-        for entity in ctx.entities:
-            try:
-                if (
-                    entity.type == enums.MessageEntityType.BOT_COMMAND
-                    and (message_text[0 : 0 + entity.length]).lower() in possible
-                ):
-                    return
-            except UnicodeDecodeError:  # Some weird character make error
-                return
-"""
     msg = ""
     replied_user_id = 0
     verifier, reasondb = await is_afk(ctx.from_user.id)
@@ -496,3 +482,28 @@ async def afk_watcher_func(self: Client, ctx: Message):
         await put_cleanmode(ctx.chat.id, send.id)
     except:
         pass
+
+
+
+
+
+
+
+
+
+
+# of 210 no line
+"""    
+    if ctx.entities:
+        possible = "test"
+        message_text = ctx.text or ctx.caption
+        for entity in ctx.entities:
+            try:
+                if (
+                    entity.type == enums.MessageEntityType.BOT_COMMAND
+                    and (message_text[0 : 0 + entity.length]).lower() in possible
+                ):
+                    return
+            except UnicodeDecodeError:  # Some weird character make error
+                return
+"""
