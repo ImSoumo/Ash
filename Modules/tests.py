@@ -10,6 +10,8 @@ from Ash import app
 from Ash.Helper import get_readable_time2
 from Ash.Core import put_cleanmode
 
+from pyrogram.enums import *
+
 X = ["!", ".", "/", "?", "$"]
 
 @app.on_message(filters.command(["test"], X))
