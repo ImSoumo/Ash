@@ -5,25 +5,22 @@ from pyrogram.types import Message
 from pyrogram.enums import ChatType
 
 @app.on_message(filters.command("id"))
-async def users_id(app, message: Message):
-    users = ""
-    users += f"ᴜsᴇʀ {message.from_user.mention} ɪᴅ : `{message.from_user.id}`\n"
-    users += f"ᴍᴇssᴀɢᴇ ɪᴅ : `{message.id}`\n"
+async def users_id(app, message: Message) -> None:
+    users = "**┈───────┈🎐┈───────┈**\n\n"
+    users += f"» ᴍᴇssᴀɢᴇ ɪᴅ : `{message.id}`\n"
+    users += f"» ᴜsᴇʀ {message.from_user.mention} ɪᴅ : `{message.from_user.id}`\n"
     if message.reply_to_message and message.reply_to_message.from_user:
-        users += f"ʀᴇᴘʟɪᴇᴅ ᴍᴇssᴀɢᴇ ɪᴅ : `{message.reply_to_message.id}`\n"
-        users += f"ʀᴇᴘʟɪᴇᴅ ᴜsᴇʀ {message.reply_to_message.from_user.mention}'s ɪᴅ : `{message.reply_to_message.from_user.id}`\n"
-    elif message.reply_to_message and message.reply_to_message.from_user and message.reply_to_message.photo:
-        users += f"ʀᴇᴘʟɪᴇᴅ ᴍᴇssᴀɢᴇ ɪᴅ : `{message.reply_to_message.id}`\n"
-        users += f"ʀᴇᴘʟɪᴇᴅ ᴜsᴇʀ {message.reply_to_message.from_user.mention}'s ɪᴅ : `{message.reply_to_message.from_user.id}`\n"
-        users += f"ʀᴇᴘʟɪᴇᴅ ᴘʜᴏᴛᴏ ғɪʟᴇ ɪᴅ : `{message.reply_to_message.photo.file_id}`\n"
+        users += f"» ʀᴇᴘʟɪᴇᴅ ᴍᴇssᴀɢᴇ ɪᴅ : `{message.reply_to_message.id}`\n"
+        users += f"» ʀᴇᴘʟɪᴇᴅ ᴜsᴇʀ {message.reply_to_message.from_user.mention}'s ɪᴅ : `{message.reply_to_message.from_user.id}`\n\n"
+    elif message.reply_to_message and message.reply_to_message.photo:
+        users += f"» ʀᴇᴘʟɪᴇᴅ ᴍᴇssᴀɢᴇ ɪᴅ : `{message.reply_to_message.id}`\n"
+        users += f"» ʀᴇᴘʟɪᴇᴅ ᴜsᴇʀ {message.reply_to_message.from_user.mention}'s ɪᴅ : `{message.reply_to_message.from_user.id}`\n"
+        users += f"» ʀᴇᴘʟɪᴇᴅ ᴘʜᴏᴛᴏ ғɪʟᴇ ɪᴅ : `{message.reply_to_message.photo.file_id}`\n\n"
     gusers = message.text.split()[1:]
     for guser in gusers:
         try:
             user = await app.get_users(guser)
-            users += f"{user.mention}'s ɪᴅ : `{user.id}`\n"
-            if len(gusers) > 1:
-                await asyncio.sleep(1)
-                await message.reply("ᴋɪɴᴅʟʏ ᴡᴀɪᴛ 𝟷 sᴇᴄᴏɴᴅs...")
+            users += f"» {user.mention}'s ɪᴅ : `{user.id}`\n"
         except Exception:
             users += ""
     if users:
