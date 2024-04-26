@@ -202,12 +202,13 @@ async def afk_state(Guardian, ctx: Message):
         await ctx.reply("**ᴜꜱᴀɢᴇ :** /afkdel [ᴇɴᴀʙʟᴇ|ᴅɪꜱᴀʙʟᴇ] ᴛᴏ ᴇɴᴀʙʟᴇ ᴏʀ ᴅɪꜱᴀʙʟᴇ ᴀᴜᴛᴏ ᴅᴇʟᴇᴛᴇ ᴍᴇꜱꜱᴀɢᴇ.")
 
 
-@app.on_message(filters.all & filters.group & filters.bot & filters.via_bot)
+@app.on_message(filters.all & filters.group & ~filters.bot & ~filters.via_bot)
 async def afk_watcher_func(self: Client, ctx: Message):
     if ctx.sender_chat:
         return
     userid = ctx.from_user.id
     user_name = ctx.from_user.mention
+"""    
     if ctx.entities:
         possible = "test"
         message_text = ctx.text or ctx.caption
@@ -220,12 +221,10 @@ async def afk_watcher_func(self: Client, ctx: Message):
                     return
             except UnicodeDecodeError:  # Some weird character make error
                 return
-
+"""
     msg = ""
     replied_user_id = 0
-
-    # Self AFK
-    verifier, reasondb = await is_afk(userid)
+    verifier, reasondb = await is_afk(ctx.from_user.id)
     if verifier:
         await remove_afk(userid)
         try:
