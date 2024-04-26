@@ -1,5 +1,8 @@
 import time
 import re
+import asyncio
+from pyrogram.types import *
+from typing import Union
 from pyrogram import Client, enums, filters
 from pyrogram.types import Message
 from Ash.AFK_db import add_afk, cleanmode_off, cleanmode_on, is_afk, remove_afk
@@ -10,9 +13,9 @@ from Ash.Core import put_cleanmode
 X = ["!", ".", "/", "?", "$"]
 
 @app.on_message(filters.command(["test"], X))
-async def active_afk(_, ctx: Message):
+async def active_afk(app, ctx:Message) -> None:
     if ctx.sender_chat:
-        return await ctx.reply("ᴛʜɪꜱ ꜰᴇᴀᴛᴜʀᴇꜱ ɴᴏᴛ ꜱᴜᴘᴘᴏʀᴛᴇᴅ ꜰᴏʀ ᴄʜᴀɴɴᴇʟ.")
+        return
     user_id = ctx.from_user.id
     verifier, reasondb = await is_afk(user_id)
     if verifier:
@@ -34,7 +37,7 @@ async def active_afk(_, ctx: Message):
                     if str(reasonafk) == "None"
                     else await ctx.reply_animation(
                         data,
-                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** {reas}\n\n").format(
+                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**ʀᴇᴀsᴏɴ:** {reas}\n\n").format(
                             usr=ctx.from_user.mention,
                             id=ctx.from_user.id,
                             tm=seenago,
@@ -53,7 +56,7 @@ async def active_afk(_, ctx: Message):
                     if str(reasonafk) == "None"
                     else await ctx.reply_photo(
                         photo=f"downloads/{user_id}.jpg",
-                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** {reas}\n\n").format(
+                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**ʀᴇᴀsᴏɴ:** {reas}\n\n").format(
                             usr=ctx.from_user.first_name, tm=seenago, reas=reasonafk
                         ),
                     )
@@ -67,7 +70,7 @@ async def active_afk(_, ctx: Message):
                 )
             elif afktype == "text_reason":
                 send = await ctx.reply_text(
-                    ("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** {reas}\n\n").format(
+                    ("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**ʀᴇᴀsᴏɴ:** {reas}\n\n").format(
                         usr=ctx.from_user.mention,
                         id=ctx.from_user.id,
                         tm=seenago,
@@ -181,6 +184,74 @@ async def active_afk(_, ctx: Message):
     await put_cleanmode(ctx.chat.id, send.id)
 
 
+ADMIN = []
+
+async def group_admins(chat_id):
+    async for member in app.get_chat_members(chat_id, filter=ChatMembersFilter.ADMINISTRATORS):
+        ADMIN.append(member.user.id)
+    return ADMIN
+
+def segs_markup(status: Union[bool, str]):
+    buttons = [
+        [
+            InlineKeyboardButton(text="🥤 Cʟᴇᴀɴ Mᴏᴅᴇ", callback_data="cleanmode_answer"),
+            InlineKeyboardButton(
+                text="✅ Eɴᴀʙʟᴇᴅ" if status == True else "❌ Dɪsᴀʙʟᴇᴅ",
+                callback_data="cleanmode",
+            ),
+        ],
+        [
+            InlineKeyboardButton(text="🗑 Cʟᴏsᴇ Aғᴋ Mᴇɴᴜ", callback_data="close"),
+        ],
+    ]
+    return buttons
+
+@app.on_message(filters.command("afkmode", X))
+async def afk_state(app:app, ctx:Message) -> None:
+    if ctx.from_user.id not in await group_admins(ctx.chat.id):
+        return await ctx.reply("ʏᴏᴜ ᴀʀᴇ ɴᴏᴛ ᴀᴅᴍɪɴ.")
+    mode = await is_cleanmode_on(ctx.chat.id)
+    segs = segs_markup()
+    return await ctx.reply(
+        (
+            f"**⚙️ Aғᴋ Mᴏᴅᴇ Sᴇᴛᴛɪɴɢs :**\n\n"
+            f"**🖇 Gʀᴏᴜᴘ :** {ctx.chat.title}\n"
+            f"**🔖 Gʀᴏᴜᴘ ɪᴅ :** `{ctx.chat.id}`\n\n"
+            f"**💡Cʜᴏᴏsᴇ ᴛʜᴇ ғᴜɴᴄᴛɪᴏɴ ʙᴜᴛᴛᴏɴs ғʀᴏᴍ ʙᴇʟᴏᴡ ᴡʜɪᴄʜ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ᴇᴅɪᴛ ᴏʀ ᴄʜᴀɴɢᴇ.**"
+        ),
+        reply_markup=InlineKeyboardMarkup(segs)
+    )
+
+@app.on_callback_query(filters.regex("close"))
+async def on_close_button(client, CallbackQuery):
+    await CallbackQuery.answer()
+    await CallbackQuery.message.delete()
+
+@app.on_callback_query(filters.regex("cleanmode_answer"))
+async def on_cleanmode_button(client, CallbackQuery):
+    await CallbackQuery.answer("⁉️ Wʜᴀᴛ ɪs Tʜɪs ?\n\nWʜᴇɴ ᴀᴄᴛɪᴠᴀᴛᴇᴅ Bᴏᴛ ᴡɪʟʟ ᴅᴇʟᴇᴛᴇ ɪᴛs ᴍᴇssᴀɢᴇ ᴀғᴛᴇʀ 5 Mɪɴs ᴛᴏ ᴍᴀᴋᴇ ʏᴏᴜʀ ᴄʜᴀᴛ ᴄʟᴇᴀɴ ᴀɴᴅ ᴄʟᴇᴀʀ.", show_alert=True)
+
+@app.on_callback_query(filters.regex("cleanmode"))
+async def on_cleanmode_change(client, CallbackQuery):
+    admin = await app.get_chat_member(CallbackQuery.message.chat.id, CallbackQuery.from_user.id)
+    if admin.status in ["ChatMemberStatus.OWNER", "ChatMemberStatus.ADMINISTRATOR"]:
+        pass
+    else:
+        return await CallbackQuery.answer("Only Admins can perform this action.", show_alert=True)
+    await CallbackQuery.answer()
+    status = None
+    if await is_cleanmode_on(CallbackQuery.message.chat.id):
+        await cleanmode_off(CallbackQuery.message.chat.id)
+    else:
+        await cleanmode_on(CallbackQuery.message.chat.id)
+        status = True
+    buttons = segs_markup(status)
+    try:
+        return await CallbackQuery.edit_message_reply_markup(reply_markup=InlineKeyboardMarkup(buttons))
+    except MessageNotModified:
+        return
+
+
 @app.on_message(filters.command(["afkdel"], X) & filters.group)
 async def afk_state(Guardian, ctx: Message):
     if not ctx.from_user:
@@ -202,8 +273,10 @@ async def afk_state(Guardian, ctx: Message):
         await ctx.reply("**ᴜꜱᴀɢᴇ :** /afkdel [ᴇɴᴀʙʟᴇ|ᴅɪꜱᴀʙʟᴇ] ᴛᴏ ᴇɴᴀʙʟᴇ ᴏʀ ᴅɪꜱᴀʙʟᴇ ᴀᴜᴛᴏ ᴅᴇʟᴇᴛᴇ ᴍᴇꜱꜱᴀɢᴇ.")
 
 
-@app.on_message(filters.all & filters.group & ~filters.bot & ~filters.via_bot)
-async def afk_watcher_func(self: Client, ctx: Message):
+@app.on_message(
+    filters.all & filters.group & ~filters.bot & ~filters.via_bot
+)
+async def afk_watcher_func(self:Client, ctx:Message) -> None:
     if ctx.sender_chat:
         return
     userid = ctx.from_user.id
@@ -224,7 +297,7 @@ async def afk_watcher_func(self: Client, ctx: Message):
                     usr=user_name, id=userid, tm=seenago
                 )
             if afktype == "text_reason":
-                msg += ("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** {reas}\n\n").format(
+                msg += ("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**ʀᴇᴀsᴏɴ:** {reas}\n\n").format(
                     usr=user_name, id=userid, tm=seenago, reas=reasonafk
                 )
             if afktype == "animation":
@@ -238,7 +311,7 @@ async def afk_watcher_func(self: Client, ctx: Message):
                 else:
                     send = await ctx.reply_animation(
                         data,
-                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** {reas}\n\n").format(
+                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**ʀᴇᴀsᴏɴ:** {reas}\n\n").format(
                             usr=user_name, id=userid, tm=seenago, reas=reasonafk
                         ),
                     )
@@ -253,7 +326,7 @@ async def afk_watcher_func(self: Client, ctx: Message):
                 else:
                     send = await ctx.reply_photo(
                         photo=f"downloads/{userid}.jpg",
-                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**Reason:** {reas}\n\n").format(
+                        caption=("**{usr}** [`{id}`] ɪꜱ ʙᴀᴄᴋ ᴏɴʟɪɴᴇ ᴀɴᴅ ᴡᴀꜱ ᴀᴡᴀʏ ꜰᴏʀ {tm}\n\n**ʀᴇᴀsᴏɴ:** {reas}\n\n").format(
                             usr=user_name, id=userid, tm=seenago, reas=reasonafk
                         ),
                     )
