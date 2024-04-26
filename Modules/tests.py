@@ -5,7 +5,7 @@ from pyrogram.types import *
 from typing import Union
 from pyrogram import Client, enums, filters
 from pyrogram.types import Message
-from Ash.AFK_db import add_afk, cleanmode_off, cleanmode_on, is_afk, remove_afk
+from Ash.AFK_db import add_afk, cleanmode_off, cleanmode_on, is_afk, remove_afk, is_cleanmode_on
 from Ash import app
 from Ash.Helper import get_readable_time2
 from Ash.Core import put_cleanmode
